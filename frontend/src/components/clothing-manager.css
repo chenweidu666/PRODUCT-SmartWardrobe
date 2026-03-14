@@ -144,6 +144,12 @@ body {
   gap: var(--space-3);
 }
 
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
 .header-icon {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
@@ -1030,12 +1036,20 @@ body {
 @media (max-width: 768px) {
   .clothing-manager {
     padding: var(--space-4);
+    min-height: auto;
   }
   
   .clothing-header {
     flex-direction: column;
     gap: var(--space-4);
     text-align: center;
+    padding: var(--space-4);
+  }
+
+  .header-buttons {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
   }
   
   .clothing-header h2 {
@@ -1051,6 +1065,23 @@ body {
     grid-template-columns: 1fr;
     gap: var(--space-4);
   }
+
+  .category-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--space-4);
+    gap: var(--space-2);
+  }
+
+  .category-filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-btn {
+    flex: 0 0 auto;
+    min-height: 40px;
+  }
   
   .form-row {
     grid-template-columns: 1fr;
@@ -1062,6 +1093,19 @@ body {
   
   .clothing-actions {
     flex-direction: column;
+  }
+
+  .modal {
+    max-height: min(88dvh, 88vh);
+  }
+
+  .modal-header,
+  .add-form,
+  .confirm-header,
+  .confirm-content,
+  .confirm-actions {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
   }
 }
 
@@ -1079,11 +1123,79 @@ body {
   }
   
   .modal {
-    margin: var(--space-2);
+    margin: 0;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    max-height: min(92dvh, 92vh);
+    align-self: flex-end;
   }
   
   .add-form {
     padding: var(--space-4);
+  }
+
+  .stats-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-card {
+    padding: var(--space-4);
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .header-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-buttons .add-button,
+  .header-buttons .add-category-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) and (orientation: portrait) {
+  .clothing-manager {
+    padding: max(var(--space-2), env(safe-area-inset-top))
+      max(var(--space-3), env(safe-area-inset-right))
+      calc(var(--space-3) + env(safe-area-inset-bottom))
+      max(var(--space-3), env(safe-area-inset-left));
+  }
+
+  .clothing-header {
+    border-radius: var(--radius-xl);
+  }
+
+  .clothing-image {
+    height: 210px;
+  }
+
+  .clothing-meta {
+    gap: var(--space-2);
+  }
+
+  .meta-item,
+  .category-tag {
+    font-size: 0.75rem;
+  }
+
+  .favorite-btn {
+    width: 36px;
+    height: 36px;
+    top: var(--space-3);
+    right: var(--space-3);
+  }
+
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .confirm-modal {
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    max-width: 100%;
   }
 }
 

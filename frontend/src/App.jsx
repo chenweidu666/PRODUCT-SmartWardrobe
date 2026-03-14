@@ -17,6 +17,7 @@ import { getApiBaseUrl } from './utils/api';
 
 const API_BASE_URL = getApiBaseUrl();
 const DEFAULT_SYSTEM_VIEW = 'wardrobe';
+const FORCE_APP_LAYOUT = true;
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,7 +51,7 @@ function App() {
 
   useEffect(() => {
     const updateLayout = () => {
-      const mobile = window.innerWidth <= 768;
+      const mobile = FORCE_APP_LAYOUT || window.innerWidth <= 768;
       setIsMobile(mobile);
       if (!mobile) {
         setMobileSidebarOpen(false);
@@ -119,6 +120,25 @@ function App() {
     if (isMobile) {
       setMobileSidebarOpen(false);
     }
+  };
+
+  const mobilePrimaryViews = [
+    { key: 'clothing', icon: '👔', label: '衣物' },
+    { key: 'statistics-report', icon: '📊', label: '统计' },
+    { key: 'recycle-bin', icon: '🗑️', label: '回收站' },
+    { key: 'user-profile', icon: '👤', label: '我的' }
+  ];
+
+  const isMobilePrimaryView = mobilePrimaryViews.some(
+    (item) => item.key === wardrobeView
+  );
+
+  const handleMobilePrimaryNav = (view) => {
+    if (view === 'menu') {
+      setMobileSidebarOpen(true);
+      return;
+    }
+    handleWardrobeViewChange(view);
   };
 
   // 登录界面
@@ -219,7 +239,7 @@ function App() {
   // 智能衣柜子系统界面
   if (currentView === 'wardrobe') {
     return (
-      <div className="wardrobe-system">
+      <div className={`wardrobe-system ${FORCE_APP_LAYOUT ? 'app-mode' : ''}`}>
         <div className="wardrobe-header">
           <div className="header-left">
             {isMobile && (
@@ -432,7 +452,7 @@ function App() {
             </div>
           </div>
           
-          <div className="wardrobe-main">
+          <div className={`wardrobe-main ${isMobile ? 'has-mobile-tabbar' : ''}`}>
             {wardrobeView === 'clothing' && (
               <ClothingManager 
                 userId={userId} 
@@ -480,6 +500,30 @@ function App() {
             )}
           </div>
         </div>
+
+        {isMobile && (
+          <nav className="mobile-primary-nav" aria-label="手机主导航">
+            {mobilePrimaryViews.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                className={`mobile-nav-item ${wardrobeView === item.key ? 'active' : ''}`}
+                onClick={() => handleMobilePrimaryNav(item.key)}
+              >
+                <span className="mobile-nav-icon">{item.icon}</span>
+                <span className="mobile-nav-label">{item.label}</span>
+              </button>
+            ))}
+            <button
+              type="button"
+              className={`mobile-nav-item ${!isMobilePrimaryView ? 'active' : ''}`}
+              onClick={() => handleMobilePrimaryNav('menu')}
+            >
+              <span className="mobile-nav-icon">☰</span>
+              <span className="mobile-nav-label">更多</span>
+            </button>
+          </nav>
+        )}
       </div>
     );
   }
