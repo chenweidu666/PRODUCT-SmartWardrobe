@@ -228,13 +228,33 @@ body {
 }
 
 .add-button {
-  composes: btn btn-primary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
   padding: var(--space-4) var(--space-8);
   font-size: 1rem;
 }
 
 .add-category-button {
-  composes: btn btn-secondary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid var(--gray-200);
+  cursor: pointer;
+  color: var(--gray-700);
+  background: white;
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
   padding: var(--space-3) var(--space-6);
   font-size: 0.875rem;
 }
@@ -1256,5 +1276,195 @@ body {
     border-color: var(--gray-600);
     color: var(--gray-100);
   }
+}
+
+/* ===== 四页一致性包装（SVG 对齐覆盖） ===== */
+.wardrobe-system.app-mode .clothing-manager {
+  padding: 6px;
+  max-width: 420px;
+  min-height: auto;
+}
+
+.wardrobe-system.app-mode .clothing-header {
+  border-radius: 16px;
+  border: 1px solid #dfe6f3;
+  box-shadow: 0 8px 18px rgba(71, 85, 105, 0.08);
+  margin-bottom: 12px;
+  padding: 14px;
+}
+
+.wardrobe-system.app-mode .clothing-header h2 {
+  font-size: 18px;
+}
+
+.wardrobe-system.app-mode .add-button,
+.wardrobe-system.app-mode .add-category-button {
+  border-radius: 10px;
+  min-height: 38px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.wardrobe-system.app-mode .stats-section {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.wardrobe-system.app-mode .stat-card {
+  border-radius: 12px;
+  padding: 10px 6px;
+  box-shadow: 0 6px 14px rgba(148, 163, 184, 0.16);
+}
+
+.wardrobe-system.app-mode .stat-icon {
+  font-size: 16px;
+}
+
+.wardrobe-system.app-mode .stat-number {
+  font-size: 15px;
+}
+
+.wardrobe-system.app-mode .stat-label {
+  font-size: 10px;
+}
+
+.wardrobe-system.app-mode .category-filter {
+  border-radius: 12px;
+  border: 1px solid #dfe6f3;
+  background: #fff;
+  box-shadow: 0 6px 12px rgba(148, 163, 184, 0.12);
+  margin-bottom: 12px;
+}
+
+.wardrobe-system.app-mode .clothing-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wardrobe-system.app-mode .clothing-card {
+  border-radius: 12px;
+  border: 1px solid #dfe6f3;
+  box-shadow: 0 8px 16px rgba(148, 163, 184, 0.14);
+}
+
+.wardrobe-system.app-mode .clothing-image {
+  height: 120px;
+}
+
+.wardrobe-system.app-mode .clothing-info {
+  padding: 8px;
+}
+
+.wardrobe-system.app-mode .clothing-name {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.wardrobe-system.app-mode .clothing-meta {
+  gap: 4px;
+}
+
+.wardrobe-system.app-mode .meta-item,
+.wardrobe-system.app-mode .category-tag {
+  font-size: 9px;
+}
+
+.wardrobe-system.app-mode .clothing-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.wardrobe-system.app-mode .edit-btn,
+.wardrobe-system.app-mode .delete-btn {
+  border-radius: 0;
+  font-size: 11px;
+  min-height: 32px;
+}
+
+.wardrobe-system.app-mode .edit-btn {
+  background: #5f82d6;
+}
+
+.wardrobe-system.app-mode .delete-btn {
+  background: #ef4444;
+}
+
+.wardrobe-system.app-mode .modal-overlay {
+  align-items: flex-end;
+  padding: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.wardrobe-system.app-mode .modal {
+  border-radius: 18px 18px 0 0;
+  max-width: 430px;
+  width: 100%;
+  max-height: 90dvh;
+  box-shadow: 0 -10px 24px rgba(15, 23, 42, 0.18);
+}
+
+.wardrobe-system.app-mode .modal-header {
+  padding: 14px;
+}
+
+.wardrobe-system.app-mode .add-form {
+  padding: 0 14px 14px;
+}
+
+.wardrobe-system.app-mode .form-actions button {
+  min-height: 38px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+/* Strict visual match for UI thumbnails */
+.wardrobe-system.app-mode .clothing-header {
+  align-items: flex-start;
+}
+
+.wardrobe-system.app-mode .clothing-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.wardrobe-system.app-mode .stats-section {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.wardrobe-system.app-mode .category-filter {
+  padding: 8px;
+}
+
+.wardrobe-system.app-mode .filter-btn {
+  border-radius: 11px;
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.wardrobe-system.app-mode .clothing-grid {
+  gap: 12px;
+}
+
+.wardrobe-system.app-mode .clothing-card {
+  overflow: hidden;
+}
+
+.wardrobe-system.app-mode .clothing-image {
+  height: 108px;
+}
+
+.wardrobe-system.app-mode .description {
+  display: none;
+}
+
+.wardrobe-system.app-mode .edit-btn,
+.wardrobe-system.app-mode .delete-btn {
+  height: 30px;
+}
+
+.wardrobe-system.app-mode .modal {
+  border-radius: 20px 20px 0 0;
 }
 

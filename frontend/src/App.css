@@ -687,6 +687,52 @@ body {
   margin-left: 0;
 }
 
+.home-placeholder {
+  background: #ffffff;
+  border: 1px solid #e6ecf8;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.home-placeholder-header h2 {
+  font-size: 20px;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.home-placeholder-header p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.home-placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.placeholder-card {
+  border: 1px dashed #cdd9f3;
+  border-radius: 12px;
+  background: #f8fbff;
+  padding: 14px;
+}
+
+.placeholder-card h3 {
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.placeholder-card p {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
 .mobile-menu-button,
 .mobile-sidebar-close {
   display: none;
@@ -699,6 +745,7 @@ body {
 /* App 模式：统一使用移动端壳层，不再使用桌面网页布局 */
 .wardrobe-system.app-mode {
   padding-bottom: calc(74px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, #f3f6ff 0%, #eef2f9 100%);
 }
 
 .wardrobe-system.app-mode .wardrobe-header {
@@ -710,6 +757,9 @@ body {
   gap: 10px;
   height: 64px;
   min-height: 64px;
+  background: transparent;
+  box-shadow: none;
+  border-bottom: none;
 }
 
 .wardrobe-system.app-mode .header-left {
@@ -738,15 +788,18 @@ body {
 }
 
 .wardrobe-system.app-mode .title-content h1 {
-  font-size: 15px;
+  font-size: 17px;
   white-space: nowrap;
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #334155;
 }
 
 .wardrobe-system.app-mode .title-subtitle {
-  display: none;
+  display: block;
+  font-size: 11px;
+  color: #94a3b8;
 }
 
 .wardrobe-system.app-mode .header-right {
@@ -759,6 +812,8 @@ body {
   padding: 6px 8px;
   width: auto;
   border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(148, 163, 184, 0.2);
+  border: 1px solid #e5eaf6;
 }
 
 .wardrobe-system.app-mode .user-avatar {
@@ -781,20 +836,23 @@ body {
   border-top: none;
   padding-top: 0;
   justify-content: center;
-  gap: 6px;
-}
-
-.wardrobe-system.app-mode .notification-btn,
-.wardrobe-system.app-mode .settings-btn {
-  width: 34px;
-  height: 34px;
+  gap: 0;
 }
 
 .wardrobe-system.app-mode .logout-button {
   padding: 8px 10px;
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #dbe2ff;
+  box-shadow: none;
 }
 
 .wardrobe-system.app-mode .logout-text {
+  display: none;
+}
+
+.wardrobe-system.app-mode .notification-btn,
+.wardrobe-system.app-mode .settings-btn {
   display: none;
 }
 
@@ -805,19 +863,7 @@ body {
 }
 
 .wardrobe-system.app-mode .wardrobe-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: min(85vw, 320px);
-  height: 100vh;
-  border-right: 1px solid #e9ecef;
-  z-index: 1001;
-  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.12);
-  transform: translateX(-105%);
-  transition: transform 0.25s ease;
-  visibility: hidden;
-  pointer-events: none;
+  display: none;
 }
 
 .wardrobe-system.app-mode .wardrobe-sidebar.mobile-open {
@@ -865,6 +911,8 @@ body {
   padding: 12px;
   min-height: calc(100vh - 64px);
   width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
 }
 
 .wardrobe-system.app-mode .wardrobe-main.has-mobile-tabbar {
@@ -878,12 +926,13 @@ body {
   bottom: 0;
   z-index: 1002;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 6px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(14px);
   border-top: 1px solid #e9ecef;
   padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 18px rgba(148, 163, 184, 0.2);
 }
 
 .wardrobe-system.app-mode .mobile-nav-item {
@@ -913,6 +962,19 @@ body {
   color: #667eea;
   background: rgba(102, 126, 234, 0.12);
   font-weight: 600;
+}
+
+.wardrobe-system.app-mode .home-placeholder {
+  border-radius: 18px;
+  border: 1px solid #dfe6f3;
+}
+
+.wardrobe-system.app-mode .home-placeholder-header h2 {
+  font-size: 18px;
+}
+
+.wardrobe-system.app-mode .home-placeholder-grid {
+  grid-template-columns: 1fr;
 }
 
 @media (max-width: 768px) and (orientation: portrait) {
@@ -1308,7 +1370,7 @@ body {
     bottom: 0;
     z-index: 1002;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(14px);
@@ -1348,8 +1410,352 @@ body {
   .wardrobe-stats {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .home-placeholder {
+    padding: 16px;
+  }
+
+  .home-placeholder-grid {
+    grid-template-columns: 1fr;
+  }
   
   .wardrobe-actions {
     justify-content: center;
   }
-} 
+}
+
+/* ===== 四页一致性包装（SVG 对齐覆盖） ===== */
+.login-container {
+  background: linear-gradient(180deg, #f3f6ff 0%, #eef2f9 100%);
+  padding: 16px;
+}
+
+.mine-login-form {
+  max-width: 420px;
+  border-radius: 18px;
+  border: 1px solid #dfe6f3;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.mine-login-header {
+  margin-bottom: 14px;
+}
+
+.mine-login-subtitle {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mine-login-tips {
+  margin-top: 14px;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.wardrobe-system.app-mode .wardrobe-content {
+  max-width: 430px;
+  margin: 0 auto;
+}
+
+.wardrobe-system.app-mode .header-right .user-info {
+  padding-right: 6px;
+}
+
+.wardrobe-system.app-mode .home-placeholder {
+  padding: 14px;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(71, 85, 105, 0.08);
+}
+
+.wardrobe-system.app-mode .home-placeholder-header p {
+  font-size: 12px;
+}
+
+.wardrobe-system.app-mode .placeholder-card {
+  border-style: solid;
+  border-color: #dfe6f3;
+  border-width: 1px;
+  background: #f8fbff;
+  border-radius: 14px;
+}
+
+.wardrobe-system.app-mode .placeholder-card h3 {
+  font-size: 13px;
+}
+
+.wardrobe-system.app-mode .placeholder-card p {
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.home-module {
+  border: 1px solid #dfe6f3;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.home-module h3 {
+  font-size: 13px;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.weather-module {
+  color: #ffffff;
+  border: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.weather-module p {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.weather-module small {
+  display: block;
+  opacity: 0.95;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.recommend-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 8px;
+}
+
+.ai-image-slot {
+  border: 1px dashed #cdd9f3;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8fbff;
+  min-height: 86px;
+}
+
+.ai-image-slot strong {
+  font-size: 12px;
+  color: #475569;
+}
+
+.ai-image-slot span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.recommend-text-list p {
+  font-size: 11px;
+  color: #475569;
+  margin-bottom: 6px;
+  background: #f8fbff;
+  border: 1px solid #e5ebfb;
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.recommend-actions {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.recommend-actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 4px;
+  font-size: 10px;
+  color: #41506f;
+  background: #e9eefb;
+}
+
+.recommend-actions button:first-child {
+  background: #c8d5f5;
+}
+
+.stats-bars {
+  height: 72px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  align-items: end;
+}
+
+.stats-bars span {
+  border-radius: 6px 6px 2px 2px;
+  background: #7d98dd;
+}
+
+.stats-bars span:nth-child(odd) {
+  background: #9aace6;
+}
+
+.stats-hint {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.stats-hint p {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* ===== Strict UI Match Layer ===== */
+.wardrobe-system.app-mode {
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background: linear-gradient(180deg, #f5f7fb 0%, #eef2f7 100%);
+}
+
+.wardrobe-system.app-mode .wardrobe-header {
+  padding: 14px 14px 10px;
+}
+
+.wardrobe-system.app-mode .title-content h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.wardrobe-system.app-mode .title-subtitle {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.wardrobe-system.app-mode .user-avatar {
+  background: linear-gradient(135deg, #6d8cff 0%, #6b5cff 100%);
+}
+
+.wardrobe-system.app-mode .wardrobe-main {
+  max-width: 402px;
+  padding: 8px 12px 94px;
+}
+
+.wardrobe-system.app-mode .home-placeholder {
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.07);
+}
+
+.wardrobe-system.app-mode .home-placeholder-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.wardrobe-system.app-mode .home-placeholder-header p {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.wardrobe-system.app-mode .weather-module {
+  border-radius: 20px;
+  padding: 14px;
+}
+
+.wardrobe-system.app-mode .recommend-module,
+.wardrobe-system.app-mode .stats-module {
+  border-radius: 18px;
+}
+
+.wardrobe-system.app-mode .ai-image-slot {
+  min-height: 102px;
+  border-radius: 12px;
+}
+
+.wardrobe-system.app-mode .recommend-actions button {
+  min-height: 28px;
+  border-radius: 9px;
+}
+
+.wardrobe-system.app-mode .mobile-primary-nav {
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 402px;
+  border-radius: 20px 20px 0 0;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+}
+
+.wardrobe-system.app-mode .mobile-nav-item {
+  min-height: 50px;
+  gap: 4px;
+}
+
+.wardrobe-system.app-mode .mobile-nav-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  position: relative;
+}
+
+.wardrobe-system.app-mode .mobile-nav-icon::before,
+.wardrobe-system.app-mode .mobile-nav-icon::after {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.wardrobe-system.app-mode .icon-home::before {
+  left: 2px;
+  top: 5px;
+  width: 14px;
+  height: 10px;
+  border: 1.8px solid currentColor;
+  border-radius: 2px;
+}
+
+.wardrobe-system.app-mode .icon-home::after {
+  left: 4px;
+  top: 0px;
+  width: 10px;
+  height: 10px;
+  border-left: 1.8px solid currentColor;
+  border-top: 1.8px solid currentColor;
+  transform: rotate(45deg);
+  background: transparent;
+}
+
+.wardrobe-system.app-mode .icon-list::before {
+  left: 2px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  border: 1.8px solid currentColor;
+  border-radius: 3px;
+}
+
+.wardrobe-system.app-mode .icon-list::after {
+  left: 5px;
+  top: 6px;
+  width: 8px;
+  height: 1.8px;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 4px 0 currentColor;
+}
+
+.wardrobe-system.app-mode .icon-user::before {
+  left: 5px;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  border: 1.8px solid currentColor;
+  border-radius: 50%;
+}
+
+.wardrobe-system.app-mode .icon-user::after {
+  left: 3px;
+  top: 10px;
+  width: 12px;
+  height: 6px;
+  border: 1.8px solid currentColor;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
