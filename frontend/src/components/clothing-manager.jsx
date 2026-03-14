@@ -131,8 +131,10 @@ function ClothingManager({ userId, token }) {
 
   // 获取分类列表
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    if (token) {
+      fetchCategories();
+    }
+  }, [token]);
 
   // 获取衣物列表和统计
   useEffect(() => {
@@ -153,11 +155,11 @@ function ClothingManager({ userId, token }) {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/categories?user_id=${userId}`);
+      const response = await authenticatedFetch(`${API_BASE_URL}/api/categories`);
       const data = await response.json();
       
       if (data.success) {
-        setCategories(data.categories || []);
+        setCategories(data.categories || data.data || []);
       } else {
         console.error('获取分类失败:', data.message);
       }
@@ -180,7 +182,14 @@ function ClothingManager({ userId, token }) {
       });
       const data = await response.json();
       if (data.success) {
-        setClothing(data.clothing);
+        const clothingList = data.clothing || [];
+        setClothing(clothingList);
+
+        // If a specific category has no items, fall back to "all"
+        // to avoid the impression that all data disappeared.
+        if (selectedCategory && clothingList.length === 0) {
+          setSelectedCategory(null);
+        }
       }
     } catch (error) {
       console.error('获取衣物列表失败:', error);
