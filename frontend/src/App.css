@@ -1,0 +1,1006 @@
+/* 基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
+
+/* 登录界面样式 */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-form {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.error-message {
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* 主系统样式 */
+.main-system {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+}
+
+.main-header h1 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logout-button {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #333;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #000;
+}
+
+.main-content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-content h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.system-modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.module-card {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.module-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.module-card.disabled:hover {
+  transform: none;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.module-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.module-card h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.module-card p {
+  color: #666;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.coming-soon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff6b6b;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* 智能衣柜子系统样式 */
+.wardrobe-system {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.wardrobe-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e9ecef;
+  height: 80px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+  min-height: 44px;
+}
+
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.back-icon {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.back-text {
+  font-size: 14px;
+}
+
+.header-divider {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, #e9ecef, transparent);
+}
+
+.system-title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.title-icon {
+  font-size: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.title-content h1 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+  font-weight: 600;
+}
+
+.title-subtitle {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px;
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.avatar-icon {
+  font-size: 20px;
+  color: white;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.user-status {
+  font-size: 11px;
+  color: #28a745;
+  font-weight: 500;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+  padding-left: 15px;
+  border-left: 1px solid #e9ecef;
+}
+
+.notification-btn,
+.settings-btn {
+  width: 40px;
+  height: 40px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.notification-btn:hover,
+.settings-btn:hover {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+  transform: scale(1.1);
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+}
+
+.logout-button:hover {
+  background: #c0392b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+.logout-icon {
+  font-size: 12px;
+}
+
+.logout-text {
+  font-size: 13px;
+}
+
+.wardrobe-content {
+  display: flex;
+  min-height: calc(100vh - 80px);
+}
+
+.wardrobe-sidebar {
+  width: 280px;
+  background: white;
+  border-right: 1px solid #e9ecef;
+  padding: 0;
+  overflow-y: auto;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.wardrobe-sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-title {
+  flex: 1;
+}
+
+.sidebar-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar-toggle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.sidebar-toggle:hover::before {
+  left: 100%;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-icon {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: rotate(0deg);
+}
+
+.toggle-icon.collapsed {
+  transform: rotate(180deg);
+}
+
+.sidebar-header h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sidebar-subtitle {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.menu-section {
+  padding: 15px 0;
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.menu-section:last-child {
+  border-bottom: none;
+}
+
+.menu-section-title {
+  padding: 0 20px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wardrobe-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wardrobe-menu li {
+  padding: 12px 20px;
+  margin: 0;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 3px solid transparent;
+}
+
+.wardrobe-menu li:hover {
+  background: #f8f9fa;
+  color: #333;
+  border-left-color: #667eea;
+}
+
+.wardrobe-menu li.active {
+  background: linear-gradient(90deg, #667eea 0%, #f8f9ff 100%);
+  color: #667eea;
+  border-left-color: #667eea;
+  font-weight: 500;
+}
+
+.wardrobe-menu li.menu-item-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.wardrobe-menu li.menu-item-disabled:hover {
+  background: none;
+  color: #666;
+  border-left-color: transparent;
+}
+
+.menu-icon {
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+}
+
+.menu-text {
+  font-weight: 500;
+  flex: 1;
+  transition: opacity 0.3s ease;
+}
+
+.menu-desc {
+  font-size: 11px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.wardrobe-sidebar.collapsed .sidebar-title h3,
+.wardrobe-sidebar.collapsed .sidebar-subtitle,
+.wardrobe-sidebar.collapsed .menu-section-title,
+.wardrobe-sidebar.collapsed .menu-text,
+.wardrobe-sidebar.collapsed .menu-desc {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wardrobe-sidebar.collapsed .menu-icon {
+  margin: 0 auto;
+  font-size: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wardrobe-sidebar.collapsed .wardrobe-menu li {
+  justify-content: center;
+  padding: 16px 8px;
+  border-radius: 12px;
+  margin: 4px 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wardrobe-sidebar.collapsed .wardrobe-menu li:hover {
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(1.05);
+}
+
+.wardrobe-sidebar.collapsed .wardrobe-menu li.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* 收缩状态下的工具提示 */
+.wardrobe-sidebar.collapsed .wardrobe-menu li {
+  position: relative;
+}
+
+.wardrobe-sidebar.collapsed .wardrobe-menu li::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.wardrobe-sidebar.collapsed .wardrobe-menu li::before {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right-color: rgba(0, 0, 0, 0.8);
+  margin-left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.wardrobe-sidebar.collapsed .wardrobe-menu li:hover::after,
+.wardrobe-sidebar.collapsed .wardrobe-menu li:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-desc {
+  font-size: 11px;
+  color: #999;
+  opacity: 0.8;
+  line-height: 1.3;
+}
+
+.wardrobe-menu li.active .menu-desc {
+  color: #667eea;
+  opacity: 0.7;
+}
+
+.wardrobe-main {
+  flex: 1;
+  padding: 30px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 0;
+}
+
+.mobile-menu-button,
+.mobile-sidebar-close {
+  display: none;
+}
+
+/* 当侧边栏收缩时，主内容区域自动扩展 */
+.wardrobe-sidebar.collapsed + .wardrobe-main {
+  margin-left: 0;
+  padding-left: 40px;
+}
+
+.wardrobe-welcome {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.wardrobe-welcome h2 {
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.wardrobe-welcome p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.wardrobe-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+.wardrobe-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 12px 24px;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.action-button:hover {
+  background: #667eea;
+  color: white;
+}
+
+.action-button.primary {
+  background: #667eea;
+  color: white;
+}
+
+.action-button.primary:hover {
+  background: #5a6fd8;
+}
+
+/* 响应式设计 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-header {
+    padding: 16px 24px;
+  }
+
+  .main-header h1 {
+    font-size: 24px;
+  }
+
+  .main-content {
+    padding: 24px;
+  }
+
+  .system-modules {
+    gap: 20px;
+    grid-template-columns: repeat(2, minmax(240px, 1fr));
+  }
+
+  .wardrobe-header {
+    padding: 0 18px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .back-button {
+    padding: 8px 12px;
+  }
+
+  .back-text {
+    display: none;
+  }
+
+  .title-content h1 {
+    font-size: 20px;
+  }
+
+  .title-subtitle {
+    display: none;
+  }
+
+  .user-info {
+    gap: 10px;
+    padding: 8px 12px;
+  }
+
+  .user-details {
+    display: none;
+  }
+
+  .wardrobe-sidebar {
+    width: 208px;
+  }
+
+  .wardrobe-main {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .system-modules {
+    grid-template-columns: 1fr;
+  }
+  
+  .wardrobe-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+    height: auto;
+    min-height: 80px;
+  }
+  
+  .header-left {
+    width: 100%;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .header-divider {
+    display: none;
+  }
+  
+  .system-title {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .title-content h1 {
+    font-size: 18px;
+  }
+  
+  .title-subtitle {
+    font-size: 11px;
+  }
+  
+  .user-info {
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    width: 100%;
+  }
+  
+  .user-actions {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid #e9ecef;
+    padding-top: 10px;
+    justify-content: center;
+  }
+  
+  .back-button {
+    align-self: center;
+  }
+  
+  .wardrobe-content {
+    position: relative;
+    min-height: calc(100vh - 190px);
+    display: block;
+  }
+  
+  .wardrobe-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(85vw, 320px);
+    height: 100vh;
+    max-height: none;
+    border-right: 1px solid #e9ecef;
+    border-bottom: none;
+    z-index: 1001;
+    box-shadow: 8px 0 30px rgba(0, 0, 0, 0.12);
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .wardrobe-sidebar.mobile-open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mobile-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 8px;
+    background: #667eea;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  .mobile-sidebar-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .sidebar-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(15, 23, 42, 0.45);
+  }
+  
+  .sidebar-header {
+    padding: 15px;
+  }
+  
+  .menu-section {
+    padding: 10px 0;
+  }
+  
+  .wardrobe-menu li {
+    padding: 10px 15px;
+    gap: 8px;
+  }
+  
+  .menu-icon {
+    font-size: 16px;
+    width: 20px;
+  }
+  
+  .menu-desc {
+    font-size: 10px;
+  }
+  
+  .wardrobe-main {
+    padding: 15px;
+    min-height: calc(100vh - 190px);
+    width: 100%;
+  }
+  
+  .wardrobe-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .wardrobe-actions {
+    justify-content: center;
+  }
+} 
