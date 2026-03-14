@@ -16,6 +16,7 @@ import Favorites from './components/favorites';
 import { getApiBaseUrl } from './utils/api';
 
 const API_BASE_URL = getApiBaseUrl();
+const DEFAULT_SYSTEM_VIEW = 'wardrobe';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,7 +24,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [currentView, setCurrentView] = useState('main'); // 'main', 'wardrobe', 'recycle-bin'
+  const [currentView, setCurrentView] = useState(DEFAULT_SYSTEM_VIEW); // 'main', 'wardrobe'
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState(null);
   const [wardrobeView, setWardrobeView] = useState('clothing'); // 'clothing', 'recycle-bin'
@@ -42,7 +43,8 @@ function App() {
       setUsername(savedUsername);
       setToken(savedToken);
       setUserId(parseInt(savedUserId));
-      setCurrentView('main');
+      // Default to the wardrobe system after login.
+      setCurrentView(DEFAULT_SYSTEM_VIEW);
     }
   }, []);
 
@@ -83,7 +85,8 @@ function App() {
         setIsLoggedIn(true);
         setToken(data.token);
         setUserId(data.user.id);
-        setCurrentView('main');
+        // Keep old pages but land directly on wardrobe for debugging.
+        setCurrentView(DEFAULT_SYSTEM_VIEW);
       } else {
         setError(data.message || '登录失败');
       }
