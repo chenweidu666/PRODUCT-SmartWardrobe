@@ -1,0 +1,74 @@
+<svg width="640" height="1120" viewBox="0 0 640 1120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="iOS style mine profile thumbnail">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5f7fb"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="frameMetal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="10%" stop-color="#374151"/>
+      <stop offset="90%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+    <linearGradient id="hero" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6d8cff"/>
+      <stop offset="100%" stop-color="#6b5cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="1120" fill="url(#bg)"/>
+  <rect x="112" y="258" width="6" height="90" rx="3" fill="#111827"/>
+  <rect x="112" y="362" width="6" height="74" rx="3" fill="#111827"/>
+  <rect x="112" y="182" width="6" height="56" rx="3" fill="#111827"/>
+  <rect x="522" y="282" width="6" height="120" rx="3" fill="#111827"/>
+  <rect x="118" y="130" width="404" height="860" rx="54" fill="url(#frameMetal)" stroke="#000000" stroke-width="1"/>
+  <rect x="126" y="138" width="388" height="844" rx="44" fill="#f2f2f7"/>
+  <path d="M248 138 H392 V160 C392 167 386 172 379 172 H261 C254 172 248 167 248 160 Z" fill="#0a0b0d"/>
+  <rect x="292" y="145" width="56" height="5" rx="2.5" fill="#2e333c"/>
+  <circle cx="366" cy="153" r="3.6" fill="#2e333c"/>
+  <text x="148" y="122" font-size="12" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#6b7280" font-weight="600">&#x9875;&#x9762;4B&#xFF1A;iOS&#x6211;&#x7684;&#x8863;&#x67DC;&#xFF08;&#x5DF2;&#x767B;&#x5F55;&#xFF09;</text>
+
+  <text x="150" y="204" font-size="22" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" fill="#111827" font-weight="700">&#x6211;&#x7684;&#x8863;&#x67DC;</text>
+
+  <rect x="145" y="220" width="350" height="156" rx="22" fill="url(#hero)"/>
+  <circle cx="188" cy="272" r="32" fill="rgba(255,255,255,0.92)"/>
+  <circle cx="188" cy="265" r="11" fill="#c9d5ff"/>
+  <rect x="171" y="279" width="34" height="18" rx="9" fill="#c9d5ff"/>
+  <text x="188" y="322" text-anchor="middle" font-size="13" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#ffffff" font-weight="700">cw</text>
+  <text x="232" y="268" font-size="16" font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, sans-serif" fill="#ffffff" font-weight="700">&#x5DF2;&#x767B;&#x5F55;</text>
+  <text x="232" y="290" font-size="12" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#edf2ff">&#x4E2A;&#x4EBA;&#x4FE1;&#x606F;&#x4E0E; AI &#x7D20;&#x6750;&#x7BA1;&#x7406;</text>
+  <rect x="232" y="302" width="116" height="28" rx="10" fill="rgba(255,255,255,0.22)"/>
+  <text x="290" y="320" text-anchor="middle" font-size="11" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#ffffff">&#x7F16;&#x8F91;&#x8D44;&#x6599;</text>
+
+  <rect x="145" y="390" width="350" height="194" rx="22" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="166" y="420" font-size="14" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#111827" font-weight="700">&#x4E2A;&#x4EBA;&#x4FE1;&#x606F;</text>
+  <rect x="166" y="434" width="308" height="40" rx="12" fill="#f8fafc" stroke="#e5e7eb"/>
+  <rect x="166" y="482" width="308" height="40" rx="12" fill="#f8fafc" stroke="#e5e7eb"/>
+  <rect x="166" y="530" width="308" height="40" rx="12" fill="#f8fafc" stroke="#e5e7eb"/>
+  <text x="182" y="458" font-size="11" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#64748b">&#x6635;&#x79F0;&#xFF1A;cw</text>
+  <text x="182" y="506" font-size="11" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#64748b">&#x8863;&#x7269;&#x603B;&#x6570;&#xFF1A;21&#x4EF6;  |  &#x5206;&#x7C7B;&#x6570;&#xFF1A;26</text>
+  <text x="182" y="554" font-size="11" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#64748b">&#x504F;&#x597D;&#x5206;&#x7C7B;&#xFF1A;&#x7FBD;&#x7ED2;&#x670D; / T&#x6064; / &#x536B;&#x8863;</text>
+
+  <rect x="145" y="598" width="350" height="230" rx="22" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="166" y="628" font-size="14" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#111827" font-weight="700">&#x4E2A;&#x4EBA;&#x56FE;&#x7247;&#xFF08;&#x7528;&#x4E8E;AI&#x751F;&#x56FE;&#xFF09;</text>
+  <rect x="166" y="642" width="308" height="122" rx="12" fill="#f8fbff" stroke="#000000" stroke-dasharray="5 4"/>
+  <text x="320" y="697" text-anchor="middle" font-size="12" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#475569">&#x4E0A;&#x4F20;&#x4E2A;&#x4EBA;&#x7A7F;&#x642D;&#x53C2;&#x8003;&#x56FE;</text>
+  <text x="320" y="715" text-anchor="middle" font-size="10" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#94a3b8">&#x5DF2;&#x7EDF;&#x8BA1;21&#x5F20;&#x7D20;&#x6750;&#x53EF;&#x7528;&#x4E8E;&#x751F;&#x56FE;</text>
+  <rect x="166" y="776" width="148" height="36" rx="12" fill="#eef2ff"/>
+  <rect x="326" y="776" width="148" height="36" rx="12" fill="#5b84ff"/>
+  <text x="240" y="799" text-anchor="middle" font-size="11" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#374151">&#x7BA1;&#x7406;&#x56FE;&#x7247;</text>
+  <text x="400" y="799" text-anchor="middle" font-size="11" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#ffffff">&#x4E0A;&#x4F20;&#x65B0;&#x56FE;</text>
+
+  <rect x="126" y="920" width="388" height="62" rx="10" fill="rgba(255,255,255,0.95)" stroke="#dde3ee"/>
+  <circle cx="191" cy="944" r="7" fill="none" stroke="#6b7280" stroke-width="1.8"/>
+  <line x1="191" y1="937" x2="191" y2="951" stroke="#6b7280" stroke-width="1.6"/>
+  <line x1="184" y1="944" x2="198" y2="944" stroke="#6b7280" stroke-width="1.6"/>
+  <rect x="311" y="936" width="18" height="14" rx="3" fill="none" stroke="#6b7280" stroke-width="1.7"/>
+  <line x1="314" y1="941" x2="326" y2="941" stroke="#6b7280" stroke-width="1.3"/>
+  <line x1="314" y1="946" x2="326" y2="946" stroke="#6b7280" stroke-width="1.3"/>
+  <rect x="397" y="928" width="104" height="46" rx="14" fill="#f3f4f6"/>
+  <circle cx="449" cy="941" r="5" fill="none" stroke="#000000" stroke-width="1.7"/>
+  <rect x="442" y="948" width="14" height="8" rx="4" fill="none" stroke="#000000" stroke-width="1.7"/>
+  <text x="191" y="966" text-anchor="middle" font-size="10" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#6b7280">&#x9996;&#x9875;</text>
+  <text x="320" y="966" text-anchor="middle" font-size="10" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#6b7280">&#x8863;&#x670D;&#x7BA1;&#x7406;</text>
+  <text x="449" y="966" text-anchor="middle" font-size="10" font-family="SF Pro Text, -apple-system, BlinkMacSystemFont, sans-serif" fill="#000000" font-weight="700">&#x6211;&#x7684;&#x8863;&#x67DC;</text>
+</svg>

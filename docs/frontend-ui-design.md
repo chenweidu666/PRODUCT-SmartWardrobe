@@ -5,30 +5,72 @@
 > 目标：单手操作、底部主导航、抽屉菜单、卡片流布局与安全区适配（刘海/手势条）。
 >
 > 范围：本轮仅重构前端页面设计与文档，不修改后端程序与接口。
+>
+> 数据说明：当前缩略图示例文案已按数据库 `wardrobe.db` 中 `cw` 账号的真实样本进行填充（衣物/分类/热门分类与示例单品）。
+
+## iOS 规范映射清单（本项目）
+
+- 字体：优先使用 `SF Pro Display / SF Pro Text`；标题用 Display，正文与表单用 Text
+- 字号：页面主标题 `22`；分组标题 `13`；正文/表单值 `11-12`；辅助说明 `10`
+- 间距：统一采用 `8pt` 栅格（`8/16/24/32`），组件上下间距优先取 8 的倍数
+- 圆角：输入框 `10`；卡片容器 `12`；主按钮 `12`；结构分组框可用直角便于标注
+- 导航高度：底部主导航按 `64` 视觉高度处理（含安全区表达）
+- 安全区：顶部保留状态栏/刘海区视觉留白；底部保留 Home Indicator 安全区
+- 按钮高度：主要操作按钮最小高度 `44`（页面3 的确认按钮按 44 执行）
+- 页面3 结构：`A 顶部组件`、`B 内容组件`、`C 底部导航组件`；其中 `B = B1 + B2`，`B1.1` 为上传子组件
 
 页面 1：首页（预留主页容器）  
 Mobile Home Thumbnail
 
-![Mobile Home Thumbnail](./images/mobile-home-thumbnail.svg)
+| 有标注版本 | 无标注版本 |
+|---|---|
+| <img src="./images/1_mobile-home-thumbnail.svg" alt="Mobile Home Thumbnail Annotated" width="480" /> | <img src="./images/1_mobile-home-thumbnail-clean.svg" alt="Mobile Home Thumbnail Clean" width="480" /> |
+
+层次描述：壳层（手机外框+安全区） -> 页面主内容层（天气/推荐/统计/AI 占位） -> 底部主导航层（首页激活）
 
 页面 2：衣服管理（展示衣服）  
 Mobile Wardrobe Thumbnail
 
-![Mobile Wardrobe Thumbnail](./images/mobile-wardrobe-thumbnail.svg)
+| 有标注版本 | 无标注版本 |
+|---|---|
+| <img src="./images/2_mobile-wardrobe-thumbnail.svg" alt="Mobile Wardrobe Thumbnail Annotated" width="480" /> | <img src="./images/2_mobile-wardrobe-thumbnail-clean.svg" alt="Mobile Wardrobe Thumbnail Clean" width="480" /> |
+
+层次描述：壳层 -> 列表页内容层（标题/筛选标签/衣物卡片网格） -> 底部主导航层（衣服管理激活）
+
+页面 2-详情：衣服详情（编辑/删除入口）  
+Mobile Wardrobe Detail Thumbnail
+
+| 有标注版本 | 无标注版本 |
+|---|---|
+| <img src="./images/2_mobile-wardrobe-detail-thumbnail.svg" alt="Mobile Wardrobe Detail Thumbnail Annotated" width="480" /> | <img src="./images/2_mobile-wardrobe-detail-thumbnail-clean.svg" alt="Mobile Wardrobe Detail Thumbnail Clean" width="480" /> |
+
+层次描述：壳层 -> 红色外层组件 -> 橙色内层组件 -> 黄色上传小组件（标题+上传框） -> 绿色基本信息 -> 青色购买信息 -> 蓝色备注 -> 紫色底部按钮组件（位于橙色层下方） -> 底部主导航
 
 页面 3：衣服管理（添加衣服）  
 Mobile Wardrobe Add Thumbnail（添加衣服页）
 
-![Mobile Wardrobe Add Thumbnail](./images/mobile-wardrobe-add-thumbnail.svg)
+| 有标注版本 | 无标注版本 |
+|---|---|
+| <img src="./images/3_mobile-wardrobe-add-thumbnail.svg" alt="Mobile Wardrobe Add Thumbnail Annotated" width="480" /> | <img src="./images/3_mobile-wardrobe-add-thumbnail-clean.svg" alt="Mobile Wardrobe Add Thumbnail Clean" width="480" /> |
+
+层次描述：壳层 -> A 顶部组件（返回+添加衣物） -> B 内容组件（B1 信息表单组件 + B2 确认按钮组件；其中 B1.1=图片上传标题+上传框） -> C 底部导航组件
 
 页面 4：我的衣柜（登录和账户信息）  
 Mobile Mine Login Thumbnail（未登录）
 
-![Mobile Mine Login Thumbnail](./images/mobile-mine-login-thumbnail.svg)
+| 有标注版本 | 无标注版本 |
+|---|---|
+| <img src="./images/4_mobile-mine-login-thumbnail.svg" alt="Mobile Mine Login Thumbnail Annotated" width="480" /> | <img src="./images/4_mobile-mine-login-thumbnail-clean.svg" alt="Mobile Mine Login Thumbnail Clean" width="480" /> |
+
+层次描述：壳层 -> 未登录内容层（品牌、欢迎文案、登录表单、注册入口） -> 底部主导航层（我的衣柜激活）
 
 Mobile Mine Profile Thumbnail（已登录）
 
-![Mobile Mine Profile Thumbnail](./images/mobile-mine-profile-thumbnail.svg)
+| 有标注版本 | 无标注版本 |
+|---|---|
+| <img src="./images/4_mobile-mine-profile-thumbnail.svg" alt="Mobile Mine Profile Thumbnail Annotated" width="480" /> | <img src="./images/4_mobile-mine-profile-thumbnail-clean.svg" alt="Mobile Mine Profile Thumbnail Clean" width="480" /> |
+
+层次描述：壳层 -> 已登录内容层（头像、昵称、资料、个人图片入口） -> 底部主导航层（我的衣柜激活）
 
 ## 前端改版方案（仅前端）
 
@@ -40,33 +82,20 @@ Mobile Mine Profile Thumbnail（已登录）
 - 全局原则：单手操作优先、重要信息首屏可见、少层级跳转
 - 实施边界：仅调整前端 UI、交互与文档；后端 API/数据库逻辑保持不变
 
-### 二、首页（当前仅预留，不实现业务模块）
+### 二、逐页页面设计要求（本轮）
 
-- 当前状态：仅提供 `首页容器` 与占位卡片，不接后端接口
-- 预留模块：`天气`、`今日穿搭推荐`、`衣服统计图表`
-- AI 预留：保留 `AI 生成穿搭图` 的前端占位区与状态文案
-- 接入时机：在页面 2/3/4 稳定后，再逐步联调首页能力
+- 页面 1 `首页`：顶部为页面标题与副标题，中部三块占位模块（天气、推荐、统计），底部固定三导航；强调“可扩展占位”而非业务完成度
+- 页面 2 `衣服管理-展示`：顶部为返回+标题+操作入口（筛选/新增），中部为横向分类筛选条与双列卡片流，底部固定导航；卡片点击进入详情编辑页
+- 页面 2-详情 `衣服详情`：沿用页面3表单结构，顶部返回与标题，中部为衣物信息表单，底部为操作按钮区；定位为独立页面而非弹窗
+- 页面 3 `衣服管理-添加`：采用 A/B/C 三层结构（顶部区/内容区/导航区）；B 区再拆 B1（信息表单）+ B2（确认按钮），B1.1 为“图片上传标题+上传框”
+- 页面 4 `我的衣柜`：同一页面支持未登录/已登录两态；未登录态显示登录入口，已登录态显示头像、资料与个人图片管理入口
 
-### 三、我的页（登录页 + 个人中心）
+### 三、页面清单（本轮 4 页）
 
-#### 未登录态（入口即登录）
-
-- 显示：品牌 Logo、欢迎语、登录表单、注册入口
-- 登录方式：用户名/邮箱 + 密码（后续可扩展验证码登录）
-- 安全：登录失败提示、密码可见切换、基础风控（失败次数限制）
-
-#### 已登录态（个人中心）
-
-- 结构简化：左上头像 + 下方用户名，弱化复杂设置入口
-- 个人信息：昵称、城市、风格标签（作为推荐与天气联动基础）
-- 个人图片：上传/管理个人穿搭照片，作为后续 AI 生图的输入素材
-
-### 四、页面清单（本轮 4 页）
-
-- 页面 1：`首页`（仅预留主页容器，业务模块后续接入）
+- 页面 1：`首页`（占位模块 + 导航）
 - 页面 2：`衣服管理-展示`（分类筛选 + 卡片流）
-- 页面 3：`衣服管理-添加`（新增衣服表单 + 图片上传）
-- 页面 4：`我的衣柜`（未登录登录入口 + 已登录个人信息/个人图片）
+- 页面 3：`衣服管理-添加`（表单 + 图片上传 + 提交）
+- 页面 4：`我的衣柜`（登录入口 + 个人中心双态）
 
 ### 五、关键用户流程
 

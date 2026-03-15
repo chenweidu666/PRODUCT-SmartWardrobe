@@ -9,6 +9,22 @@
 - 项目介绍与部署说明：本 README
 - 前端 UI 设计与缩略图：[`docs/frontend-ui-design.md`](./docs/frontend-ui-design.md)
 
+## UI 七色组件约定（hchlqlz）
+
+为便于页面 2（衣服详情）与页面 3（添加衣物）复用同一套结构，UI 缩略图统一采用 `红橙黄绿青蓝紫` 七色标识组件层级。
+
+- 红色：外层大组件容器
+- 橙色：内层复用组件容器
+- 黄色：图片上传区
+- 绿色：基本信息区
+- 青色：购买信息区
+- 蓝色：备注区
+- 紫色：底部按钮区
+
+当前图稿落地文件：
+- `docs/images/mobile-wardrobe-detail-thumbnail.svg`（UI 2，已为每个组件添加颜色文字标注）
+- `docs/images/mobile-wardrobe-add-thumbnail.svg`（UI 3，沿用同一七色组件映射）
+
 ## 功能特性
 
 - **衣物管理** — 添加、编辑、删除衣物，支持图片上传与自动压缩

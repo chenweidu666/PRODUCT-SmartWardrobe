@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>页面3 添加衣物（无标注）</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+      background: linear-gradient(135deg, #f5f7fb, #eef2f7);
+      color: #111827;
+    }
+    .canvas {
+      width: 640px;
+      height: 1120px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .phone {
+      position: absolute;
+      left: 118px;
+      top: 130px;
+      width: 404px;
+      height: 860px;
+      border-radius: 54px;
+      background: linear-gradient(135deg, #1f2937, #374151 10%, #374151 90%, #1f2937);
+      border: 1px solid #000;
+      padding: 8px;
+    }
+    .screen {
+      width: 388px;
+      height: 844px;
+      border-radius: 44px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .notch {
+      position: absolute;
+      left: 122px;
+      top: 0;
+      width: 144px;
+      height: 32px;
+      background: #0a0b0d;
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+    .back {
+      position: absolute;
+      left: 24px;
+      top: 60px;
+      font-size: 15px;
+      color: #334155;
+    }
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 56px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .content {
+      position: absolute;
+      left: 10px;
+      top: 98px;
+      width: 368px;
+      height: 682px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      background: #fff;
+    }
+    .group-title {
+      position: absolute;
+      left: 16px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .upload-box {
+      position: absolute;
+      left: 16px;
+      top: 160px;
+      width: 356px;
+      height: 112px;
+      border: 1px dashed #9ca3af;
+      border-radius: 12px;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #475569;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .upload-box small { color: #94a3b8; font-size: 10px; }
+    .field {
+      position: absolute;
+      height: 36px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+    .note-box {
+      position: absolute;
+      left: 16px;
+      top: 660px;
+      width: 356px;
+      height: 24px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 11px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+    .submit {
+      position: absolute;
+      left: 16px;
+      top: 702px;
+      width: 356px;
+      height: 48px;
+      border-radius: 12px;
+      background: #111827;
+      color: #fff;
+      font-size: 12px;
+      border: none;
+      font-weight: 600;
+    }
+    .nav {
+      position: absolute;
+      left: 0;
+      top: 780px;
+      width: 388px;
+      height: 64px;
+      border: 1px solid #dde3ee;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      font-size: 10px;
+      color: #6b7280;
+    }
+    .nav .active { color: #000; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="canvas">
+    <div class="phone">
+      <div class="screen">
+        <div class="notch"></div>
+        <div class="back">返回</div>
+        <div class="title">添加衣物</div>
+
+        <div class="content"></div>
+        <div class="group-title" style="top: 118px;">图片上传</div>
+        <div class="upload-box">
+          点击或拖拽上传衣物图片
+          <small>JPG / PNG，最大 5MB</small>
+        </div>
+
+        <div class="group-title" style="top: 266px;">基本信息</div>
+        <div class="field" style="left:16px;top:280px;width:356px;">分类：羽绒服</div>
+        <div class="field" style="left:16px;top:324px;width:356px;">名称：速写羽绒服</div>
+        <div class="field" style="left:16px;top:368px;width:172px;">颜色：黑色</div>
+        <div class="field" style="left:200px;top:368px;width:172px;">尺码：XXL</div>
+        <div class="field" style="left:16px;top:412px;width:172px;">品牌：速写</div>
+        <div class="field" style="left:200px;top:412px;width:172px;">季节：冬季</div>
+        <div class="field" style="left:16px;top:456px;width:356px;">材质：棉混纺</div>
+        <div class="field" style="left:16px;top:500px;width:172px;">肩宽：46cm</div>
+        <div class="field" style="left:200px;top:500px;width:172px;">胸围：108cm</div>
+
+        <div class="group-title" style="top: 554px;">购买信息</div>
+        <div class="field" style="left:16px;top:568px;width:172px;">价格：￥1497</div>
+        <div class="field" style="left:200px;top:568px;width:172px;">日期：数据库暂无</div>
+
+        <div class="group-title" style="top: 618px;">备注</div>
+        <div class="note-box">例：通勤外套，洗涤时注意水温</div>
+
+        <button class="submit">确认添加衣服</button>
+        <div class="nav">
+          <span>首页</span>
+          <span class="active">衣服管理</span>
+          <span>我的衣柜</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
