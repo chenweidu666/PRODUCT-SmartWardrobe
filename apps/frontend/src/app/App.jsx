@@ -3,6 +3,7 @@ import { HomePage } from '../pages/HomePage';
 import { WardrobeManagePage } from '../pages/WardrobeManagePage';
 import { AddClothingPage } from '../pages/AddClothingPage';
 import { WardrobeDetailPage } from '../pages/WardrobeDetailPage';
+import { RecycleBinPage } from '../pages/RecycleBinPage';
 import { ProfilePage } from '../pages/ProfilePage';
 
 const PAGES = {
@@ -10,6 +11,7 @@ const PAGES = {
   WARDROBE_MANAGE: 'wardrobe-manage',
   WARDROBE_ADD: 'wardrobe-add',
   WARDROBE_DETAIL: 'wardrobe-detail',
+  WARDROBE_RECYCLE: 'wardrobe-recycle',
   PROFILE: 'profile',
 };
 
@@ -94,6 +96,16 @@ function App() {
             onNavigate={handleNavigate}
             token={auth.token}
             itemId={selectedItemId}
+            onClothingChanged={handleClothingChanged}
+            onAuthExpired={handleAuthExpired}
+          />
+        );
+      case PAGES.WARDROBE_RECYCLE:
+        return (
+          <RecycleBinPage
+            onNavigate={handleNavigate}
+            token={auth.token}
+            clothingVersion={clothingVersion}
             onClothingChanged={handleClothingChanged}
             onAuthExpired={handleAuthExpired}
           />

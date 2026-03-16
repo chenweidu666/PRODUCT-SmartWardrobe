@@ -555,7 +555,7 @@ app.post('/api/clothing', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const {
-      category_id, name, description, color, size, brand, season, price, purchase_date, image_url
+      category_id, name, description, color, size, brand, season, price, purchase_date, image_url, is_processed
     } = req.body;
     
     // 验证必填字段
@@ -577,7 +577,8 @@ app.post('/api/clothing', authenticateToken, async (req, res) => {
       season: season || '',
       price: price || '',
       purchase_date: purchase_date || '',
-      image_url: image_url || ''
+      image_url: image_url || '',
+      is_processed: Number(is_processed) === 1 ? 1 : 0
     };
     
     const newClothing = await clothingDB.create(clothingData);
@@ -609,6 +610,9 @@ app.put('/api/clothing/:id', authenticateToken, async (req, res) => {
     delete updateData.id;
     delete updateData.user_id;
     delete updateData.created_at;
+    if (Object.prototype.hasOwnProperty.call(updateData, 'is_processed')) {
+      updateData.is_processed = Number(updateData.is_processed) === 1 ? 1 : 0;
+    }
     
     const result = await clothingDB.update(id, userId, updateData);
     if (result.updated) {

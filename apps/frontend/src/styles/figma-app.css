@@ -68,6 +68,25 @@
   font-size: 12px;
 }
 
+.m-radio-row {
+  min-height: 44px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #fff;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.m-radio-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #334155;
+}
+
 .m-input,
 .m-select,
 .m-textarea {
@@ -188,12 +207,79 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #dbe3ef;
   background: linear-gradient(135deg, #eef2f7, #e2e8f0);
   font-size: 42px;
 }
 
 .m-clothing-info {
   padding: 10px;
+}
+
+.m-clothing-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
+  min-height: 34px;
+}
+
+.m-clothing-tags {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.m-clothing-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  height: 22px;
+  max-width: 100%;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  color: #334155;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+.m-clothing-tag-processed {
+  border-color: #b7e4c7;
+  background: #ecfdf3;
+  color: #166534;
+}
+
+.m-clothing-tag-pending {
+  border-color: #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.m-clothing-tag-category {
+  border-color: #c7d2fe;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.m-clothing-tag-attr {
+  border-color: #dbe3ef;
+  background: #f8fafc;
+  color: #334155;
+}
+
+.m-clothing-tag-price {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  color: #1d4ed8;
 }
 
 .m-section-title {

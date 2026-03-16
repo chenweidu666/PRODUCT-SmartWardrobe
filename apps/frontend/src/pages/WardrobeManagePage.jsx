@@ -48,7 +48,10 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
         <div className="m-header-row">
           <button className="m-btn m-btn-secondary" onClick={() => onNavigate('home')}>返回</button>
           <h1 className="m-title" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', margin: 0, fontSize: 20 }}>衣服管理</h1>
-          <button className="m-btn m-btn-primary" onClick={() => onNavigate('wardrobe-add')}>添加</button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="m-btn m-btn-secondary" onClick={() => onNavigate('wardrobe-recycle')}>回收站</button>
+            <button className="m-btn m-btn-primary" onClick={() => onNavigate('wardrobe-add')}>添加</button>
+          </div>
         </div>
       </header>
 
@@ -86,8 +89,18 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
                   {item.image_url ? <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '👕'}
                 </div>
                 <div className="m-clothing-info">
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>{item.name}</div>
-                  <div style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>{`${item.color || '-'} · ${item.size || '-'}`}</div>
+                  <div className="m-clothing-name">{item.name || '未命名衣物'}</div>
+                  <div className="m-clothing-tags">
+                    <span className={`m-clothing-tag ${Number(item.is_processed) === 1 ? 'm-clothing-tag-processed' : 'm-clothing-tag-pending'}`}>
+                      {Number(item.is_processed) === 1 ? '已处理' : '未处理'}
+                    </span>
+                    <span className="m-clothing-tag m-clothing-tag-category">{item.category_name || '未分类'}</span>
+                    {item.color ? <span className="m-clothing-tag m-clothing-tag-attr">{item.color}</span> : null}
+                    {item.size ? <span className="m-clothing-tag m-clothing-tag-attr">{item.size}</span> : null}
+                    <span className="m-clothing-tag m-clothing-tag-price">
+                      {Number.isFinite(Number(item.price)) && Number(item.price) > 0 ? `¥${Number(item.price).toFixed(2)}` : '未设置价格'}
+                    </span>
+                  </div>
                 </div>
               </button>
             ))}

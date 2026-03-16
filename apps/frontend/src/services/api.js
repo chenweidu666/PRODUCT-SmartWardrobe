@@ -80,6 +80,31 @@ export function deleteClothing(token, id) {
   });
 }
 
+export function fetchRecycleBin(token) {
+  return apiRequest('/api/recycle-bin', { token });
+}
+
+export function restoreRecycleItem(token, id) {
+  return apiRequest(`/api/recycle-bin/${id}/restore`, {
+    method: 'POST',
+    token,
+  });
+}
+
+export function deleteRecycleItemPermanently(token, id) {
+  return apiRequest(`/api/recycle-bin/${id}`, {
+    method: 'DELETE',
+    token,
+  });
+}
+
+export function emptyRecycleBin(token) {
+  return apiRequest('/api/recycle-bin', {
+    method: 'DELETE',
+    token,
+  });
+}
+
 export function fetchTodayWeather(city = '上海') {
   const cityParam = encodeURIComponent(city);
   return apiRequest(`/api/weather?city=${cityParam}`);

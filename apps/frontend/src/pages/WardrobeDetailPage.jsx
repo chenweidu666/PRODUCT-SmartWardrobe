@@ -20,7 +20,14 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
         setLoading(true);
         setErrorMessage('');
         const data = await fetchClothingDetail(token, itemId);
-        setItem(data.clothing || null);
+        if (data.clothing) {
+          setItem({
+            ...data.clothing,
+            is_processed: Number(data.clothing.is_processed) === 1 ? 1 : 0,
+          });
+        } else {
+          setItem(null);
+        }
       } catch (error) {
         if (error.isAuthError) {
           onAuthExpired?.();
@@ -42,6 +49,9 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
 
   const handleChange = (key) => (event) => {
     setItem((prev) => ({ ...prev, [key]: event.target.value }));
+  };
+  const handleProcessedChange = (event) => {
+    setItem((prev) => ({ ...prev, is_processed: Number(event.target.value) === 1 ? 1 : 0 }));
   };
 
   const handleUploadChange = (event) => {
@@ -80,6 +90,7 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
         name: item.name,
         color: item.color,
         size: item.size,
+        is_processed: Number(item.is_processed) === 1 ? 1 : 0,
         brand: item.brand,
         season: item.season,
         price: item.price,
@@ -118,6 +129,26 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
         return;
       }
       setErrorMessage(error.message || '删除失败');
+    }
+  };
+
+  const handleToggleProcessed = async () => {
+    if (!item?.id) return;
+    const nextProcessed = Number(item.is_processed) === 1 ? 0 : 1;
+    try {
+      setSaving(true);
+      setErrorMessage('');
+      await updateClothing(token, item.id, { is_processed: nextProcessed });
+      setItem((prev) => ({ ...prev, is_processed: nextProcessed }));
+      onClothingChanged?.();
+    } catch (error) {
+      if (error.isAuthError) {
+        onAuthExpired?.();
+        return;
+      }
+      setErrorMessage(error.message || '更新处理状态失败');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -196,6 +227,33 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
                   </select>
                 </div>
               </div>
+              <div style={{ marginTop: 10 }}>
+                <label className="m-label">是否处理</label>
+                <div className="m-radio-row">
+                  <label className="m-radio-item">
+                    <input
+                      type="radio"
+                      name="detail_is_processed"
+                      value="0"
+                      checked={Number(item.is_processed) !== 1}
+                      onChange={handleProcessedChange}
+                      disabled={!editing}
+                    />
+                    <span>未处理</span>
+                  </label>
+                  <label className="m-radio-item">
+                    <input
+                      type="radio"
+                      name="detail_is_processed"
+                      value="1"
+                      checked={Number(item.is_processed) === 1}
+                      onChange={handleProcessedChange}
+                      disabled={!editing}
+                    />
+                    <span>已处理</span>
+                  </label>
+                </div>
+              </div>
 
               <div className="m-section-title" style={{ marginTop: 16 }}>购买信息</div>
               <div className="m-grid-2">
@@ -210,7 +268,12 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
             {editing ? (
               <button className="m-btn m-btn-primary" style={{ width: '100%' }} onClick={handleSave} disabled={saving}>{saving ? '保存中...' : '保存修改'}</button>
             ) : (
-              <button className="m-btn m-btn-danger" style={{ width: '100%' }} onClick={handleDelete}>删除衣物</button>
+              <div className="m-grid-2">
+                <button className="m-btn m-btn-secondary" onClick={handleToggleProcessed} disabled={saving}>
+                  {saving ? '处理中...' : Number(item.is_processed) === 1 ? '标记为未处理' : '标记为已处理'}
+                </button>
+                <button className="m-btn m-btn-danger" onClick={handleDelete}>删除衣物</button>
+              </div>
             )}
           </>
         ) : null}

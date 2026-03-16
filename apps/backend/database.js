@@ -48,6 +48,7 @@ const db = new sqlite3.Database(DB_PATH, (err) => {
         image_url TEXT,
         price TEXT,
         purchase_date TEXT,
+        is_processed INTEGER DEFAULT 0,
         is_favorite INTEGER DEFAULT 0,
         is_deleted INTEGER DEFAULT 0,
         deleted_at DATETIME,
@@ -56,6 +57,22 @@ const db = new sqlite3.Database(DB_PATH, (err) => {
         FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (category_id) REFERENCES user_categories(id)
       )`);
+      db.all(`PRAGMA table_info(clothing_items)`, (tableInfoError, columns) => {
+        if (tableInfoError) {
+          console.error('读取 clothing_items 表结构失败:', tableInfoError.message);
+          return;
+        }
+        const hasProcessedColumn = Array.isArray(columns) && columns.some((column) => column.name === 'is_processed');
+        if (!hasProcessedColumn) {
+          db.run(`ALTER TABLE clothing_items ADD COLUMN is_processed INTEGER DEFAULT 0`, (alterError) => {
+            if (alterError) {
+              console.error('新增 is_processed 字段失败:', alterError.message);
+              return;
+            }
+            console.log('已迁移：新增 clothing_items.is_processed 字段');
+          });
+        }
+      });
       console.log('数据库表初始化完成');
     });
   }
@@ -308,8 +325,8 @@ const clothingDB = {
       const sql = `
         INSERT INTO clothing_items (
           user_id, category_id, name, description, color, size, 
-          brand, season, material, style, image_url, price, purchase_date, is_favorite, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime("now"), datetime("now"))
+          brand, season, material, style, image_url, price, purchase_date, is_processed, is_favorite, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime("now"), datetime("now"))
       `;
       const params = [
         clothingData.user_id,
@@ -325,6 +342,7 @@ const clothingDB = {
         clothingData.image_url,
         clothingData.price || null,
         clothingData.purchase_date || null,
+        clothingData.is_processed ? 1 : 0,
         false
       ];
       

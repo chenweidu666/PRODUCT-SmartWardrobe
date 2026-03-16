@@ -15,6 +15,7 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
     name: '',
     color: '',
     size: '',
+    is_processed: '0',
     brand: '',
     season: '',
     price: '',
@@ -102,6 +103,7 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
         name: formData.name,
         color: formData.color,
         size: formData.size,
+        is_processed: Number(formData.is_processed),
         brand: formData.brand,
         season: formData.season,
         price: formData.price,
@@ -176,6 +178,31 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
                     <option key={size} value={size}>{size}</option>
                   ))}
                 </select>
+              </div>
+            </div>
+            <div style={{ marginTop: 10 }}>
+              <label className="m-label">是否处理</label>
+              <div className="m-radio-row">
+                <label className="m-radio-item">
+                  <input
+                    type="radio"
+                    name="is_processed"
+                    value="0"
+                    checked={formData.is_processed === '0'}
+                    onChange={handleChange('is_processed')}
+                  />
+                  <span>未处理</span>
+                </label>
+                <label className="m-radio-item">
+                  <input
+                    type="radio"
+                    name="is_processed"
+                    value="1"
+                    checked={formData.is_processed === '1'}
+                    onChange={handleChange('is_processed')}
+                  />
+                  <span>已处理</span>
+                </label>
               </div>
             </div>
 
