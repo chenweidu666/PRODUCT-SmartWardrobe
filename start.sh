@@ -43,8 +43,8 @@ check_port() {
     fi
 }
 
-check_port 7861
-check_port 7860
+check_port 8081
+check_port 8080
 
 echo -e "${GREEN}✅ 环境配置完成${NC}"
 echo ""
@@ -55,7 +55,7 @@ echo -e "${BLUE}📦 安装依赖...${NC}"
 
 # 安装后端依赖
 echo -e "${YELLOW}[后端] 安装依赖...${NC}"
-cd backend
+cd apps/backend
 if [ ! -d "node_modules" ]; then
     npm install
 else
@@ -65,7 +65,7 @@ cd ..
 
 # 安装前端依赖
 echo -e "${YELLOW}[前端] 安装依赖...${NC}"
-cd frontend
+cd apps/frontend
 if [ ! -d "node_modules" ]; then
     npm install
 else
@@ -83,10 +83,10 @@ echo -e "${BLUE}🗄️  初始化数据库...${NC}"
 # 确保数据库目录存在
 mkdir -p database
 
-cd backend
-if [ ! -f "../database/wardrobe.db" ]; then
+cd apps/backend
+if [ ! -f "../../database/wardrobe.db" ]; then
     echo -e "${YELLOW}[数据库] 首次运行，正在初始化数据库...${NC}"
-    node init-db.js
+    echo -e "${YELLOW}[数据库] 将在后端启动时自动建表${NC}"
 else
     echo -e "${GREEN}[数据库] 数据库文件已存在，跳过初始化${NC}"
 fi
@@ -107,7 +107,7 @@ sleep 2
 
 # 启动后端服务
 echo -e "${YELLOW}[后端] 启动服务...${NC}"
-cd backend
+cd apps/backend
 nohup npm run dev > backend.log 2>&1 &
 BACKEND_PID=$!
 echo $BACKEND_PID > backend.pid
@@ -119,7 +119,7 @@ sleep 3
 
 # 启动前端服务
 echo -e "${YELLOW}[前端] 启动服务...${NC}"
-cd frontend
+cd apps/frontend
 nohup npm run dev > frontend.log 2>&1 &
 FRONTEND_PID=$!
 echo $FRONTEND_PID > frontend.pid
@@ -139,7 +139,7 @@ if kill -0 $BACKEND_PID 2>/dev/null; then
     echo -e "${GREEN}✅ 后端服务: 运行中 (PID: $BACKEND_PID)${NC}"
 else
     echo -e "${RED}❌ 后端服务启动失败${NC}"
-    echo -e "${YELLOW}查看后端日志: tail -f backend/backend.log${NC}"
+    echo -e "${YELLOW}查看后端日志: tail -f apps/backend/backend.log${NC}"
 fi
 
 # 检查前端
@@ -147,44 +147,44 @@ if kill -0 $FRONTEND_PID 2>/dev/null; then
     echo -e "${GREEN}✅ 前端服务: 运行中 (PID: $FRONTEND_PID)${NC}"
 else
     echo -e "${RED}❌ 前端服务启动失败${NC}"
-    echo -e "${YELLOW}查看前端日志: tail -f frontend/frontend.log${NC}"
+    echo -e "${YELLOW}查看前端日志: tail -f apps/frontend/frontend.log${NC}"
 fi
 
 # 检查端口
-if netstat -tuln 2>/dev/null | grep -q ":7861 "; then
-    echo -e "${GREEN}✅ 前端端口 7861: 已监听${NC}"
+if netstat -tuln 2>/dev/null | grep -q ":8081 "; then
+    echo -e "${GREEN}✅ 前端端口 8081: 已监听${NC}"
 else
-    echo -e "${RED}❌ 前端端口 7861: 未监听${NC}"
+    echo -e "${RED}❌ 前端端口 8081: 未监听${NC}"
 fi
 
-if netstat -tuln 2>/dev/null | grep -q ":7860 "; then
-    echo -e "${GREEN}✅ 后端端口 7860: 已监听${NC}"
+if netstat -tuln 2>/dev/null | grep -q ":8080 "; then
+    echo -e "${GREEN}✅ 后端端口 8080: 已监听${NC}"
 else
-    echo -e "${RED}❌ 后端端口 7860: 未监听${NC}"
+    echo -e "${RED}❌ 后端端口 8080: 未监听${NC}"
 fi
 
 echo ""
 echo -e "${CYAN}🎉 服务启动完成！${NC}"
 echo -e "${CYAN}🌐 访问地址:${NC}"
-echo -e "  本地前端: ${GREEN}http://localhost:7861${NC}"
-echo -e "  本地后端: ${GREEN}http://localhost:7860${NC}"
-echo -e "  公网前端: ${GREEN}http://101.34.232.12:7861${NC}"
-echo -e "  公网后端: ${GREEN}http://101.34.232.12:7860${NC}"
+echo -e "  本地前端: ${GREEN}http://localhost:8081${NC}"
+echo -e "  本地后端: ${GREEN}http://localhost:8080${NC}"
+echo -e "  公网前端: ${GREEN}http://101.34.232.12:8081${NC}"
+echo -e "  公网后端: ${GREEN}http://101.34.232.12:8080${NC}"
 echo ""
 echo -e "${YELLOW}📋 常用命令:${NC}"
-echo -e "  查看后端日志: ${GREEN}tail -f backend/backend.log${NC}"
-echo -e "  查看前端日志: ${GREEN}tail -f frontend/frontend.log${NC}"
+echo -e "  查看后端日志: ${GREEN}tail -f apps/backend/backend.log${NC}"
+echo -e "  查看前端日志: ${GREEN}tail -f apps/frontend/frontend.log${NC}"
 echo -e "  停止服务: ${GREEN}pkill -f 'node.*server.js' && pkill -f 'vite'${NC}"
-echo -e "  查看用户列表: ${GREEN}curl http://101.34.232.12:7860/api/users${NC}"
+echo -e "  查看用户列表: ${GREEN}curl http://101.34.232.12:8080/api/users${NC}"
 echo ""
 
 # 自动打开浏览器（如果支持）
 if command -v xdg-open >/dev/null 2>&1; then
     echo -e "${YELLOW}🌐 正在打开浏览器...${NC}"
     sleep 2
-    xdg-open http://101.34.232.12:7861 2>/dev/null || true
+    xdg-open http://101.34.232.12:8081 2>/dev/null || true
 elif command -v open >/dev/null 2>&1; then
     echo -e "${YELLOW}🌐 正在打开浏览器...${NC}"
     sleep 2
-    open http://101.34.232.12:7861 2>/dev/null || true
+    open http://101.34.232.12:8081 2>/dev/null || true
 fi 

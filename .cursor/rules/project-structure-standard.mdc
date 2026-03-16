@@ -1,0 +1,40 @@
+---
+description: Enforce SmartWardrobe standard project structure
+alwaysApply: true
+---
+
+# SmartWardrobe 标准目录规则
+
+后续所有改动默认遵循以下结构，不再回退到根目录散放 `frontend/`、`backend/`。
+
+## 目标目录
+
+```text
+project/
+├── apps/
+│   ├── frontend/
+│   └── backend/
+├── packages/        # 可选：共享 utils/types/config
+├── infra/
+│   ├── docker/
+│   │   ├── Dockerfile.frontend
+│   │   ├── Dockerfile.backend
+│   │   └── docker-compose.yml
+│   └── database/    # migrations / seeds / init.sql
+├── docs/
+├── design/          # figma-project 放这里
+├── scripts/
+├── .gitignore       # 必须包含 tmp/
+├── README.md
+└── start.sh         # 可逐步迁移到 Makefile / justfile
+```
+
+## 执行约束
+
+- 前端代码仅放在 `apps/frontend`。
+- 后端代码仅放在 `apps/backend`。
+- Docker 与编排文件仅放在 `infra/docker`。
+- 设计稿与导出资源仅放在 `design`。
+- 新增共享模块优先放在 `packages`，避免前后端互相直接复制代码。
+- 根目录禁止新增重复应用目录（如新的 `frontend/`、`backend/`）。
+- 修改启动或部署命令时，路径必须使用新结构（`apps/*`、`infra/*`）。

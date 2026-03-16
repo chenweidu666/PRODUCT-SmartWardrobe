@@ -1,0 +1,12 @@
+---
+description: Frontend debugging defaults to iPhone13 preview mode
+globs: frontend/**/*
+alwaysApply: false
+---
+
+# iPhone13 调试预览规则（临时）
+
+- 在本项目前端调试、UI 对齐、截图核对时，默认使用 iPhone13 预览参数：`?device=iphone13`。
+- 默认访问地址使用：`http://192.168.31.10:8080/?device=iphone13`。
+- 若任务需要还原真实自适应行为，再切回无参数地址：`http://192.168.31.10:8080/`。
+- 进行 UI 比对时，优先以 iPhone13 预览状态进行观察与截图，避免因浏览器窗口尺寸导致偏差。
