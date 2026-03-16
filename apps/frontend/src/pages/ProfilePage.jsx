@@ -102,17 +102,6 @@ export function ProfilePage({ onNavigate, token, user, onLoginSuccess, onLogout 
           <button className="m-btn m-btn-primary" style={{ width: '100%', marginTop: 12 }}>保存修改</button>
         </section>
 
-        {/*
-          <section className="m-card">
-            <div className="m-section-title">个人图片管理</div>
-            <div className="m-grid-2" style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
-              {Array.from({ length: 6 }).map((_, idx) => (
-                <div key={idx} style={{ aspectRatio: '1 / 1', border: '2px dashed #cbd5e1', borderRadius: 10, display: 'grid', placeItems: 'center', color: '#94a3b8' }}>图片</div>
-              ))}
-            </div>
-          </section>
-        */}
-
         <button className="m-btn m-btn-danger" style={{ width: '100%' }} onClick={() => { onLogout?.(); setShowLoginForm(false); }}>
           退出登录
         </button>
