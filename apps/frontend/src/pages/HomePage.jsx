@@ -39,7 +39,7 @@ export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) 
       try {
         setWeatherLoading(true);
         setWeatherError('');
-        const data = await fetchTodayWeather('上海');
+        const data = await fetchTodayWeather('南京');
         setWeather(data.weather || null);
       } catch (error) {
         setWeatherError(error.message || '天气加载失败');
