@@ -19,8 +19,7 @@ async function ensureDirectories() {
 const IMAGE_CONFIG = {
   // 压缩后的图片配置
   compressed: {
-    maxWidth: 800,  // 降低最大宽度，减少存储空间
-    maxHeight: 800,
+    size: 800,      // 统一输出为正方形缩略图，便于前端网格展示
     quality: 80,    // 降低质量，进一步压缩
     format: 'webp'  // 使用WebP格式，体积更小
   },
@@ -63,15 +62,18 @@ function generateFileName(originalName, categoryName = null) {
 // 处理图片（压缩、转换格式）
 async function processImage(buffer, originalName, categoryName = null) {
   try {
-    const fileName = generateFileName(originalName, categoryName);
-    const filePath = path.join(UPLOAD_DIR, fileName);
+    const sourceFileName = generateFileName(originalName, categoryName);
+    const outputFileName = `${path.parse(sourceFileName).name}.webp`;
+    const filePath = path.join(UPLOAD_DIR, outputFileName);
 
-    // 处理图片：压缩、调整尺寸、转换格式，并保持EXIF方向信息
+    // 处理图片：自动旋转 -> 去白边 -> 正方形裁切 -> WebP压缩
     await sharp(buffer)
       .rotate() // 自动根据EXIF方向信息旋转图片
-      .resize(IMAGE_CONFIG.compressed.maxWidth, IMAGE_CONFIG.compressed.maxHeight, {
-        fit: 'inside',
-        withoutEnlargement: true
+      .trim({ threshold: 10 })
+      .resize(IMAGE_CONFIG.compressed.size, IMAGE_CONFIG.compressed.size, {
+        fit: 'cover',
+        position: 'centre',
+        withoutEnlargement: false
       })
       .webp({ quality: IMAGE_CONFIG.compressed.quality })
       .toFile(filePath);
@@ -81,9 +83,9 @@ async function processImage(buffer, originalName, categoryName = null) {
 
     return {
       success: true,
-      fileName: fileName,
+      fileName: outputFileName,
       fileSize: stats.size,
-      fileUrl: `/uploads/${fileName}`,
+      fileUrl: `/uploads/${outputFileName}`,
       // 计算压缩率
       compressionRatio: Math.round((1 - stats.size / buffer.length) * 100)
     };

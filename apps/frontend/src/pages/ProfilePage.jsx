@@ -20,7 +20,7 @@ export function ProfilePage({ onNavigate, token, user, onLoginSuccess, onLogout 
         <main className="m-main">
           <section className="m-card" style={{ textAlign: 'center', paddingTop: 24, paddingBottom: 24 }}>
             <div style={{ width: 72, height: 72, margin: '0 auto 12px', borderRadius: '50%', background: '#f1f5f9', display: 'grid', placeItems: 'center', fontSize: 28 }}>👤</div>
-            <div style={{ fontSize: 20, fontWeight: 700 }}>欢迎使用智能衣橱</div>
+            <div style={{ fontSize: 20, fontWeight: 700 }}>欢迎使用智能衣柜</div>
             <div style={{ color: '#64748b', fontSize: 13, margin: '8px 0 14px' }}>登录后即可同步您的衣物数据</div>
             <button className="m-btn m-btn-primary" style={{ width: '100%', marginBottom: 8 }} onClick={() => setShowLoginForm(true)}>登录 / 注册</button>
             <button className="m-btn m-btn-secondary" style={{ width: '100%' }} onClick={() => onNavigate('home')}>暂不登录</button>

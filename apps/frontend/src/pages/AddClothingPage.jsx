@@ -270,7 +270,7 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
         {errorMessage ? <section className="m-card" style={{ color: '#dc2626' }}>{errorMessage}</section> : null}
 
         <button className="m-btn m-btn-primary" style={{ width: '100%' }} onClick={handleSubmit} disabled={submitting}>
-          {submitting ? '提交中...' : '确认添加衣服'}
+          {submitting ? '提交中...' : '确认添加衣物'}
         </button>
       </main>
 

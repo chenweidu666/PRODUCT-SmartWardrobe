@@ -70,7 +70,7 @@ export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) 
   return (
     <div className="m-page">
       <header className="m-header">
-        <h1 className="m-title">智能衣橱</h1>
+        <h1 className="m-title">智能衣柜</h1>
         <p className="m-subtitle">让穿搭更简单，让生活更优雅</p>
       </header>
 
@@ -110,15 +110,12 @@ export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) 
                   </div>
                 ))}
               </div>
-              <button className="m-btn m-btn-primary" style={{ width: '100%', marginTop: 12 }} onClick={() => onNavigate('wardrobe-manage')}>
-                查看衣柜
-              </button>
             </>
           )}
         </section>
 
         <section className="m-card" style={{ background: 'linear-gradient(135deg,#ecfdf5,#f0fdf4)' }}>
-          <div className="m-section-title">我的衣橱数据</div>
+          <div className="m-section-title">我的衣物数据</div>
           <div className="m-grid-2" style={{ gridTemplateColumns: 'repeat(2,1fr)', textAlign: 'center' }}>
             <div><div style={{ fontSize: 24, fontWeight: 700 }}>{token ? dashboard.total : '--'}</div><div className="m-subtitle">总件数</div></div>
             <div><div style={{ fontSize: 24, fontWeight: 700 }}>{token ? dashboard.monthAdded : '--'}</div><div className="m-subtitle">本月新增</div></div>
@@ -128,10 +125,6 @@ export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) 
           {errorMessage ? <div style={{ color: '#dc2626', fontSize: 12, marginTop: 8 }}>{errorMessage}</div> : null}
         </section>
 
-        <div className="m-grid-2">
-          <button className="m-btn m-btn-secondary" onClick={() => onNavigate('wardrobe-manage')}>浏览衣柜</button>
-          <button className="m-btn m-btn-primary" onClick={() => onNavigate('wardrobe-add')}>添加衣物</button>
-        </div>
       </main>
 
       <BottomNav active="home" onNavigate={onNavigate} />

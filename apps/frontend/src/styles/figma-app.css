@@ -11,6 +11,11 @@
   flex-direction: column;
 }
 
+.m-page-manage {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .m-header {
   position: sticky;
   top: 0;
@@ -18,7 +23,7 @@
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid #e2e8f0;
   backdrop-filter: blur(10px);
-  padding: 16px;
+  padding: 12px;
 }
 
 .m-header-row {
@@ -26,11 +31,20 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
+  gap: 8px;
+}
+
+.m-header-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  flex: 1;
+  max-width: 360px;
 }
 
 .m-title {
   margin: 0;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
 }
 
@@ -42,38 +56,70 @@
 
 .m-main {
   flex: 1;
-  padding: 16px;
-  padding-bottom: 92px;
+  padding: 12px;
+  padding-bottom: 84px;
   overflow-y: auto;
+}
+
+.m-main-manage {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-list-scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 8px;
 }
 
 .m-card {
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 12px;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 8px;
 }
 
 .m-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .m-label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: #64748b;
   font-size: 12px;
 }
 
+.m-filter-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.m-filter-inline-label {
+  color: #64748b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.m-filter-inline .m-select {
+  min-height: 34px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+
 .m-radio-row {
-  min-height: 44px;
+  min-height: 40px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
   background: #fff;
-  padding: 10px 12px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -91,24 +137,24 @@
 .m-select,
 .m-textarea {
   width: 100%;
-  min-height: 44px;
+  min-height: 40px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
   background: #fff;
-  padding: 10px 12px;
+  padding: 8px 10px;
   font-size: 14px;
 }
 
 .m-textarea {
-  min-height: 84px;
+  min-height: 72px;
   resize: vertical;
 }
 
 .m-btn {
   border: none;
   border-radius: 12px;
-  min-height: 44px;
-  padding: 0 14px;
+  min-height: 38px;
+  padding: 0 12px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -134,7 +180,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 64px;
+  height: 56px;
   background: rgba(255, 255, 255, 0.96);
   border-top: 1px solid #e2e8f0;
   display: flex;
@@ -155,7 +201,7 @@
   background: transparent;
   color: #64748b;
   min-width: 74px;
-  min-height: 44px;
+  min-height: 38px;
   border-radius: 10px;
   font-size: 12px;
 }
@@ -168,9 +214,9 @@
 
 .m-chip-row {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   overflow-x: auto;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 
 .m-chip {
@@ -178,8 +224,8 @@
   border-radius: 999px;
   background: #fff;
   color: #64748b;
-  min-height: 30px;
-  padding: 0 12px;
+  min-height: 28px;
+  padding: 0 10px;
   font-size: 12px;
 }
 
@@ -192,12 +238,12 @@
 .m-clothing-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .m-clothing-card {
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border-radius: 12px;
   background: #fff;
   overflow: hidden;
 }
@@ -212,24 +258,32 @@
   font-size: 42px;
 }
 
+.m-clothing-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .m-clothing-info {
-  padding: 10px;
+  padding: 8px;
 }
 
 .m-clothing-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.25;
-  min-height: 34px;
+  min-height: 30px;
 }
 
 .m-clothing-tags {
   display: flex;
   align-items: flex-start;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 12px;
+  gap: 4px;
+  margin-top: 8px;
 }
 
 .m-clothing-tag {
@@ -237,14 +291,14 @@
   align-items: center;
   justify-content: center;
   min-height: 22px;
-  height: 22px;
+  height: 20px;
   max-width: 100%;
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: 999px;
   border: 1px solid #dbe3ef;
   background: #f8fafc;
   color: #334155;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
@@ -283,7 +337,84 @@
 }
 
 .m-section-title {
-  margin: 4px 0 10px;
-  font-size: 14px;
+  margin: 2px 0 8px;
+  font-size: 13px;
   font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .figma-root {
+    padding: 20px;
+  }
+
+  .m-page {
+    max-width: 980px;
+    margin: 0 auto;
+    border: 1px solid #dbe3ef;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #f8fafc;
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+  }
+
+  .m-header {
+    padding: 14px 18px;
+  }
+
+  .m-main {
+    padding: 16px 18px;
+    padding-bottom: 100px;
+  }
+
+  .m-main-manage {
+    overflow: hidden;
+  }
+
+  .m-card {
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .m-clothing-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .m-bottom-nav {
+    background: transparent;
+    border-top: none;
+    pointer-events: none;
+    padding: 0 16px 10px;
+    box-sizing: border-box;
+  }
+
+  .m-bottom-nav-inner {
+    width: min(980px, 100%);
+    height: 56px;
+    border: 1px solid #dbe3ef;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    pointer-events: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .m-page {
+    max-width: 1180px;
+  }
+
+  .m-main {
+    padding: 18px 20px;
+    padding-bottom: 106px;
+  }
+
+  .m-clothing-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .m-bottom-nav-inner {
+    width: min(1180px, 100%);
+  }
 }

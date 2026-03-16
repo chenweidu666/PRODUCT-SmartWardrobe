@@ -11,7 +11,7 @@ export function BottomNav({ active, onNavigate }) {
           className={`m-nav-btn ${active === 'wardrobe-manage' || active === 'wardrobe-add' || active === 'wardrobe-detail' ? 'active' : ''}`}
           onClick={() => onNavigate('wardrobe-manage')}
         >
-          衣服管理
+          衣物管理
         </button>
         <button className={`m-nav-btn ${active === 'profile' ? 'active' : ''}`} onClick={() => onNavigate('profile')}>
           我的衣柜

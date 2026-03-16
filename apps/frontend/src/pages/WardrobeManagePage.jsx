@@ -51,12 +51,11 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
   }, [activeCategory, activeStatus, items]);
 
   return (
-    <div className="m-page">
+    <div className="m-page m-page-manage">
       <header className="m-header">
         <div className="m-header-row">
           <button className="m-btn m-btn-secondary" onClick={() => onNavigate('home')}>返回</button>
-          <h1 className="m-title" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', margin: 0, fontSize: 20 }}>衣服管理</h1>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div className="m-header-actions">
             <button className="m-btn m-btn-secondary" onClick={() => onNavigate('wardrobe-recycle')}>回收站</button>
             <button
               className={`m-btn ${activeStatus === 'processed' ? 'm-btn-primary' : 'm-btn-secondary'}`}
@@ -69,7 +68,7 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
         </div>
       </header>
 
-      <main className="m-main">
+      <main className="m-main m-main-manage">
         {!token ? (
           <section className="m-card">
             <div style={{ fontSize: 14, color: '#475569', marginBottom: 12 }}>请先登录后再查看衣物列表。</div>
@@ -79,8 +78,8 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
 
         {token ? (
           <>
-            <div className="m-card" style={{ marginBottom: 12 }}>
-              <label className="m-label" style={{ marginBottom: 8 }}>分类筛选</label>
+            <div className="m-filter-inline">
+              <span className="m-filter-inline-label">分类：</span>
               <select className="m-select" value={activeCategory} onChange={(event) => setActiveCategory(event.target.value)}>
                 {categories.map((item) => (
                   <option key={item} value={item}>{item}</option>
@@ -90,45 +89,47 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
           </>
         ) : null}
 
-        {!loading && token && list.length === 0 ? (
-          <section className="m-card" style={{ color: '#64748b' }}>
-            当前筛选条件下暂无衣物。
-          </section>
-        ) : null}
+        <section className="m-list-scroll-area">
+          {!loading && token && list.length === 0 ? (
+            <section className="m-card" style={{ color: '#64748b' }}>
+              当前筛选条件下暂无衣物。
+            </section>
+          ) : null}
 
-        {loading ? <section className="m-card">加载中...</section> : null}
-        {errorMessage ? <section className="m-card" style={{ color: '#dc2626' }}>{errorMessage}</section> : null}
+          {loading ? <section className="m-card">加载中...</section> : null}
+          {errorMessage ? <section className="m-card" style={{ color: '#dc2626' }}>{errorMessage}</section> : null}
 
-        {token && !loading ? (
-          <div className="m-clothing-grid">
-            {list.map((item) => (
-              <button
-                key={item.id}
-                className="m-clothing-card"
-                onClick={() => onNavigate('wardrobe-detail', item.id)}
-                style={{ textAlign: 'left', padding: 0 }}
-              >
-                <div className="m-clothing-image">
-                  {item.image_url ? <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '👕'}
-                </div>
-                <div className="m-clothing-info">
-                  <div className="m-clothing-name">{item.name || '未命名衣物'}</div>
-                  <div className="m-clothing-tags">
-                    <span className={`m-clothing-tag ${Number(item.is_processed) === 1 ? 'm-clothing-tag-processed' : 'm-clothing-tag-pending'}`}>
-                      {Number(item.is_processed) === 1 ? '已处理' : '未处理'}
-                    </span>
-                    <span className="m-clothing-tag m-clothing-tag-category">{item.category_name || '未分类'}</span>
-                    {item.color ? <span className="m-clothing-tag m-clothing-tag-attr">{item.color}</span> : null}
-                    {item.size ? <span className="m-clothing-tag m-clothing-tag-attr">{item.size}</span> : null}
-                    <span className="m-clothing-tag m-clothing-tag-price">
-                      {Number.isFinite(Number(item.price)) && Number(item.price) > 0 ? `¥${Number(item.price).toFixed(2)}` : '未设置价格'}
-                    </span>
+          {token && !loading ? (
+            <div className="m-clothing-grid">
+              {list.map((item) => (
+                <button
+                  key={item.id}
+                  className="m-clothing-card"
+                  onClick={() => onNavigate('wardrobe-detail', item.id)}
+                  style={{ textAlign: 'left', padding: 0 }}
+                >
+                  <div className="m-clothing-image">
+                    {item.image_url ? <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '👕'}
                   </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : null}
+                  <div className="m-clothing-info">
+                    <div className="m-clothing-name">{item.name || '未命名衣物'}</div>
+                    <div className="m-clothing-tags">
+                      <span className={`m-clothing-tag ${Number(item.is_processed) === 1 ? 'm-clothing-tag-processed' : 'm-clothing-tag-pending'}`}>
+                        {Number(item.is_processed) === 1 ? '已处理' : '未处理'}
+                      </span>
+                      <span className="m-clothing-tag m-clothing-tag-category">{item.category_name || '未分类'}</span>
+                      {item.color ? <span className="m-clothing-tag m-clothing-tag-attr">{item.color}</span> : null}
+                      {item.size ? <span className="m-clothing-tag m-clothing-tag-attr">{item.size}</span> : null}
+                      <span className="m-clothing-tag m-clothing-tag-price">
+                        {Number.isFinite(Number(item.price)) && Number(item.price) > 0 ? `¥${Number(item.price).toFixed(2)}` : '未设置价格'}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </section>
       </main>
 
       <BottomNav active="wardrobe-manage" onNavigate={onNavigate} />
