@@ -19,6 +19,23 @@ const {
 } = require('./utils/imageProcessor');
 
 const app = express();
+const authenticateToken = createAuthenticateToken(JWT_SECRET_KEY);
+const configuredCorsOrigins = String(process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const defaultDevOrigins = [
+  'http://localhost:8081',
+  'http://127.0.0.1:8081',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173'
+];
+const allowedCorsOrigins =
+  configuredCorsOrigins.length > 0
+    ? configuredCorsOrigins
+    : process.env.NODE_ENV === 'production'
+      ? []
+      : defaultDevOrigins;
 
 const WEATHER_CONDITION_LABELS = {
   0: '晴',
@@ -80,7 +97,17 @@ ensureDirectories();
 
 // 中间件
 app.use(cors({
-  origin: true,  // 允许所有来源（内网部署，安全可控）
+  origin: (origin, callback) => {
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+    if (allowedCorsOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error('CORS origin not allowed'));
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -217,7 +244,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // 获取用户列表（需要管理员权限）
-app.get('/api/users', async (req, res) => {
+app.get('/api/users', authenticateToken, async (req, res) => {
   try {
     const users = await userDB.getAll();
     res.json({
@@ -289,7 +316,7 @@ app.get('/api/weather', async (req, res) => {
 });
 
 // 删除用户（需要管理员权限）
-app.delete('/api/users/:id', async (req, res) => {
+app.delete('/api/users/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const result = await userDB.delete(id);
@@ -313,9 +340,6 @@ app.delete('/api/users/:id', async (req, res) => {
     });
   }
 });
-
-// 验证token的中间件
-const authenticateToken = createAuthenticateToken(JWT_SECRET_KEY);
 
 // 图片上传接口
 app.post('/api/upload/image', authenticateToken, upload.single('image'), async (req, res) => {
