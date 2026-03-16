@@ -324,6 +324,12 @@
   color: #3730a3;
 }
 
+.m-clothing-tag-season {
+  border-color: #bae6fd;
+  background: #f0f9ff;
+  color: #0369a1;
+}
+
 .m-clothing-tag-attr {
   border-color: #dbe3ef;
   background: #f8fafc;
@@ -411,7 +417,7 @@
   }
 
   .m-clothing-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .m-bottom-nav-inner {

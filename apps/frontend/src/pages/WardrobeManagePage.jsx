@@ -57,9 +57,15 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
         (activeStatus === 'processed' && processed) ||
         (activeStatus === 'pending' && !processed);
       const itemSeasons = parseSeasonList(item.season);
+      const isAllSeason =
+        SEASON_OPTIONS.every((season) => itemSeasons.includes(season)) &&
+        itemSeasons.length >= SEASON_OPTIONS.length;
       const matchSeason =
         activeSeasons.length === 0 ||
-        activeSeasons.some((season) => itemSeasons.includes(season));
+        (
+          activeSeasons.every((season) => itemSeasons.includes(season)) &&
+          (activeSeasons.length === SEASON_OPTIONS.length || !isAllSeason)
+        );
       return matchCategory && matchStatus && matchSeason;
     });
   }, [activeCategory, activeStatus, activeSeasons, items]);
@@ -161,6 +167,9 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
                         {Number(item.is_processed) === 1 ? '已处理' : '未处理'}
                       </span>
                       <span className="m-clothing-tag m-clothing-tag-category">{item.category_name || '未分类'}</span>
+                      {parseSeasonList(item.season).map((seasonTag) => (
+                        <span key={`${item.id}-season-${seasonTag}`} className="m-clothing-tag m-clothing-tag-season">{seasonTag}</span>
+                      ))}
                       {item.color ? <span className="m-clothing-tag m-clothing-tag-attr">{item.color}</span> : null}
                       {item.size ? <span className="m-clothing-tag m-clothing-tag-attr">{item.size}</span> : null}
                       <span className="m-clothing-tag m-clothing-tag-price">

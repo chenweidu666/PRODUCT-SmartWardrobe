@@ -219,22 +219,22 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
                 </div>
                 <div>
                   <label className="m-label">适配季节</label>
-                  {editing ? (
-                    <div className="m-chip-row" style={{ marginBottom: 0 }}>
-                      {SEASON_OPTIONS.map((season) => (
-                        <button
-                          type="button"
-                          key={season}
-                          className={`m-chip ${seasonSelections.includes(season) ? 'active' : ''}`}
-                          onClick={() => toggleSeason(season)}
-                        >
-                          {season}
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <input className="m-input" value={(seasonSelections || []).join('、')} disabled />
-                  )}
+                  <div className="m-chip-row" style={{ marginBottom: 0 }}>
+                    {SEASON_OPTIONS.map((season) => (
+                      <button
+                        type="button"
+                        key={season}
+                        className={`m-chip ${seasonSelections.includes(season) ? 'active' : ''}`}
+                        onClick={() => {
+                          if (editing) toggleSeason(season);
+                        }}
+                        disabled={!editing}
+                        style={editing ? undefined : { opacity: 0.85, cursor: 'default' }}
+                      >
+                        {season}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div>
                   <label className="m-label">尺码（可选）</label>
