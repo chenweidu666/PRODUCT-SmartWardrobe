@@ -4,6 +4,7 @@ import { fetchClothingList } from '../services/api';
 
 export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthExpired }) {
   const [activeCategory, setActiveCategory] = useState('全部');
+  const [activeStatus, setActiveStatus] = useState('pending');
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -38,9 +39,16 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
   }, [items]);
 
   const list = useMemo(() => {
-    if (activeCategory === '全部') return items;
-    return items.filter((item) => (item.category_name || '未分类') === activeCategory);
-  }, [activeCategory, items]);
+    return items.filter((item) => {
+      const matchCategory = activeCategory === '全部' || (item.category_name || '未分类') === activeCategory;
+      const processed = Number(item.is_processed) === 1;
+      const matchStatus =
+        activeStatus === 'all' ||
+        (activeStatus === 'processed' && processed) ||
+        (activeStatus === 'pending' && !processed);
+      return matchCategory && matchStatus;
+    });
+  }, [activeCategory, activeStatus, items]);
 
   return (
     <div className="m-page">
@@ -50,6 +58,12 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
           <h1 className="m-title" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', margin: 0, fontSize: 20 }}>衣服管理</h1>
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="m-btn m-btn-secondary" onClick={() => onNavigate('wardrobe-recycle')}>回收站</button>
+            <button
+              className={`m-btn ${activeStatus === 'processed' ? 'm-btn-primary' : 'm-btn-secondary'}`}
+              onClick={() => setActiveStatus((prev) => (prev === 'processed' ? 'pending' : 'processed'))}
+            >
+              {activeStatus === 'processed' ? '未处理' : '已处理'}
+            </button>
             <button className="m-btn m-btn-primary" onClick={() => onNavigate('wardrobe-add')}>添加</button>
           </div>
         </div>
@@ -64,13 +78,22 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
         ) : null}
 
         {token ? (
-          <div className="m-chip-row">
-            {categories.map((item) => (
-              <button key={item} className={`m-chip ${activeCategory === item ? 'active' : ''}`} onClick={() => setActiveCategory(item)}>
-                {item}
-              </button>
-            ))}
-          </div>
+          <>
+            <div className="m-card" style={{ marginBottom: 12 }}>
+              <label className="m-label" style={{ marginBottom: 8 }}>分类筛选</label>
+              <select className="m-select" value={activeCategory} onChange={(event) => setActiveCategory(event.target.value)}>
+                {categories.map((item) => (
+                  <option key={item} value={item}>{item}</option>
+                ))}
+              </select>
+            </div>
+          </>
+        ) : null}
+
+        {!loading && token && list.length === 0 ? (
+          <section className="m-card" style={{ color: '#64748b' }}>
+            当前筛选条件下暂无衣物。
+          </section>
         ) : null}
 
         {loading ? <section className="m-card">加载中...</section> : null}

@@ -3,6 +3,14 @@ import { BottomNav } from '../components/navigation/BottomNav';
 import { deleteClothing, fetchClothingDetail, updateClothing, uploadClothingImage } from '../services/api';
 
 const SIZE_OPTIONS = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+const SEASON_OPTIONS = ['春季', '夏季', '秋季', '冬季'];
+
+function parseSeasonList(value) {
+  return String(value || '')
+    .split(/[、,，\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
 
 export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChanged, onAuthExpired }) {
   const [editing, setEditing] = useState(false);
@@ -12,6 +20,7 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
   const [saving, setSaving] = useState(false);
   const [pendingImageFile, setPendingImageFile] = useState(null);
   const [pendingPreviewUrl, setPendingPreviewUrl] = useState('');
+  const [seasonSelections, setSeasonSelections] = useState([]);
 
   React.useEffect(() => {
     if (!token || !itemId) return;
@@ -25,8 +34,10 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
             ...data.clothing,
             is_processed: Number(data.clothing.is_processed) === 1 ? 1 : 0,
           });
+          setSeasonSelections(parseSeasonList(data.clothing.season));
         } else {
           setItem(null);
+          setSeasonSelections([]);
         }
       } catch (error) {
         if (error.isAuthError) {
@@ -52,6 +63,12 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
   };
   const handleProcessedChange = (event) => {
     setItem((prev) => ({ ...prev, is_processed: Number(event.target.value) === 1 ? 1 : 0 }));
+  };
+  const toggleSeason = (season) => {
+    setSeasonSelections((prev) => {
+      const exists = prev.includes(season);
+      return exists ? prev.filter((item) => item !== season) : [...prev, season];
+    });
   };
 
   const handleUploadChange = (event) => {
@@ -80,6 +97,10 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
     try {
       setSaving(true);
       setErrorMessage('');
+      if (seasonSelections.length === 0) {
+        setErrorMessage('适配季节不能为空');
+        return;
+      }
       let nextImageUrl = item.image_url || '';
       if (pendingImageFile) {
         const uploadResult = await uploadClothingImage(token, pendingImageFile, item.category_name || '');
@@ -91,8 +112,10 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
         color: item.color,
         size: item.size,
         is_processed: Number(item.is_processed) === 1 ? 1 : 0,
+        chest_circumference: item.chest_circumference || '',
+        shoulder_width: item.shoulder_width || '',
         brand: item.brand,
-        season: item.season,
+        season: seasonSelections,
         price: item.price,
         purchase_date: item.purchase_date,
         description: item.description,
@@ -129,26 +152,6 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
         return;
       }
       setErrorMessage(error.message || '删除失败');
-    }
-  };
-
-  const handleToggleProcessed = async () => {
-    if (!item?.id) return;
-    const nextProcessed = Number(item.is_processed) === 1 ? 0 : 1;
-    try {
-      setSaving(true);
-      setErrorMessage('');
-      await updateClothing(token, item.id, { is_processed: nextProcessed });
-      setItem((prev) => ({ ...prev, is_processed: nextProcessed }));
-      onClothingChanged?.();
-    } catch (error) {
-      if (error.isAuthError) {
-        onAuthExpired?.();
-        return;
-      }
-      setErrorMessage(error.message || '更新处理状态失败');
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -215,7 +218,26 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
                   <input className="m-input" value={item.color || ''} onChange={handleChange('color')} disabled={!editing} />
                 </div>
                 <div>
-                  <label className="m-label">尺码</label>
+                  <label className="m-label">适配季节</label>
+                  {editing ? (
+                    <div className="m-chip-row" style={{ marginBottom: 0 }}>
+                      {SEASON_OPTIONS.map((season) => (
+                        <button
+                          type="button"
+                          key={season}
+                          className={`m-chip ${seasonSelections.includes(season) ? 'active' : ''}`}
+                          onClick={() => toggleSeason(season)}
+                        >
+                          {season}
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <input className="m-input" value={(seasonSelections || []).join('、')} disabled />
+                  )}
+                </div>
+                <div>
+                  <label className="m-label">尺码（可选）</label>
                   <select className="m-select" value={item.size || ''} onChange={handleChange('size')} disabled={!editing}>
                     <option value="">请选择尺码</option>
                     {SIZE_OPTIONS.map((size) => (
@@ -226,32 +248,40 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
                     ) : null}
                   </select>
                 </div>
-              </div>
-              <div style={{ marginTop: 10 }}>
-                <label className="m-label">是否处理</label>
-                <div className="m-radio-row">
-                  <label className="m-radio-item">
-                    <input
-                      type="radio"
-                      name="detail_is_processed"
-                      value="0"
-                      checked={Number(item.is_processed) !== 1}
-                      onChange={handleProcessedChange}
-                      disabled={!editing}
-                    />
-                    <span>未处理</span>
-                  </label>
-                  <label className="m-radio-item">
-                    <input
-                      type="radio"
-                      name="detail_is_processed"
-                      value="1"
-                      checked={Number(item.is_processed) === 1}
-                      onChange={handleProcessedChange}
-                      disabled={!editing}
-                    />
-                    <span>已处理</span>
-                  </label>
+                <div>
+                  <label className="m-label">胸围（可选）</label>
+                  <input className="m-input" value={item.chest_circumference || ''} onChange={handleChange('chest_circumference')} disabled={!editing} />
+                </div>
+                <div>
+                  <label className="m-label">肩宽（可选）</label>
+                  <input className="m-input" value={item.shoulder_width || ''} onChange={handleChange('shoulder_width')} disabled={!editing} />
+                </div>
+                <div>
+                  <label className="m-label">是否处理</label>
+                  <div className="m-radio-row">
+                    <label className="m-radio-item">
+                      <input
+                        type="radio"
+                        name="detail_is_processed"
+                        value="0"
+                        checked={Number(item.is_processed) !== 1}
+                        onChange={handleProcessedChange}
+                        disabled={!editing}
+                      />
+                      <span>未处理</span>
+                    </label>
+                    <label className="m-radio-item">
+                      <input
+                        type="radio"
+                        name="detail_is_processed"
+                        value="1"
+                        checked={Number(item.is_processed) === 1}
+                        onChange={handleProcessedChange}
+                        disabled={!editing}
+                      />
+                      <span>已处理</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -268,12 +298,7 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
             {editing ? (
               <button className="m-btn m-btn-primary" style={{ width: '100%' }} onClick={handleSave} disabled={saving}>{saving ? '保存中...' : '保存修改'}</button>
             ) : (
-              <div className="m-grid-2">
-                <button className="m-btn m-btn-secondary" onClick={handleToggleProcessed} disabled={saving}>
-                  {saving ? '处理中...' : Number(item.is_processed) === 1 ? '标记为未处理' : '标记为已处理'}
-                </button>
-                <button className="m-btn m-btn-danger" onClick={handleDelete}>删除衣物</button>
-              </div>
+              <button className="m-btn m-btn-danger" style={{ width: '100%' }} onClick={handleDelete}>删除衣物</button>
             )}
           </>
         ) : null}

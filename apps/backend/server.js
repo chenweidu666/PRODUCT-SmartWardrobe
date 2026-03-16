@@ -53,6 +53,14 @@ const WEATHER_CONDITION_LABELS = {
 const WEATHER_CACHE_MS = 10 * 60 * 1000;
 const weatherCache = new Map();
 
+function normalizeSeasonInput(season) {
+  if (Array.isArray(season)) {
+    const valid = season.map((item) => String(item || '').trim()).filter(Boolean);
+    return valid.join('、');
+  }
+  return String(season || '').trim();
+}
+
 async function requestJson(url, timeout = 6000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeout);
@@ -555,14 +563,15 @@ app.post('/api/clothing', authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const {
-      category_id, name, description, color, size, brand, season, price, purchase_date, image_url, is_processed
+      category_id, name, description, color, size, brand, season, price, purchase_date, image_url, is_processed, chest_circumference, shoulder_width
     } = req.body;
+    const normalizedSeason = normalizeSeasonInput(season);
     
     // 验证必填字段
-    if (!category_id || !name) {
+    if (!category_id || !name || !color || !normalizedSeason) {
       return res.status(400).json({
         success: false,
-        message: '分类和名称不能为空'
+        message: '分类、名称、颜色、适配季节不能为空'
       });
     }
     
@@ -574,9 +583,11 @@ app.post('/api/clothing', authenticateToken, async (req, res) => {
       color: color || '',
       size: size || '',
       brand: brand || '',
-      season: season || '',
+      season: normalizedSeason,
       price: price || '',
       purchase_date: purchase_date || '',
+      chest_circumference: chest_circumference || '',
+      shoulder_width: shoulder_width || '',
       image_url: image_url || '',
       is_processed: Number(is_processed) === 1 ? 1 : 0
     };
@@ -610,6 +621,18 @@ app.put('/api/clothing/:id', authenticateToken, async (req, res) => {
     delete updateData.id;
     delete updateData.user_id;
     delete updateData.created_at;
+    if (Object.prototype.hasOwnProperty.call(updateData, 'season')) {
+      updateData.season = normalizeSeasonInput(updateData.season);
+    }
+    if (Object.prototype.hasOwnProperty.call(updateData, 'color') && !String(updateData.color || '').trim()) {
+      return res.status(400).json({ success: false, message: '颜色不能为空' });
+    }
+    if (Object.prototype.hasOwnProperty.call(updateData, 'season') && !String(updateData.season || '').trim()) {
+      return res.status(400).json({ success: false, message: '适配季节不能为空' });
+    }
+    if (Object.prototype.hasOwnProperty.call(updateData, 'name') && !String(updateData.name || '').trim()) {
+      return res.status(400).json({ success: false, message: '名称不能为空' });
+    }
     if (Object.prototype.hasOwnProperty.call(updateData, 'is_processed')) {
       updateData.is_processed = Number(updateData.is_processed) === 1 ? 1 : 0;
     }

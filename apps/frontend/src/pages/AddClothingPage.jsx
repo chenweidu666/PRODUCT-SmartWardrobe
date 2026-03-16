@@ -3,6 +3,7 @@ import { BottomNav } from '../components/navigation/BottomNav';
 import { createCategory, createClothing, fetchCategories, uploadClothingImage } from '../services/api';
 
 const SIZE_OPTIONS = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+const SEASON_OPTIONS = ['春季', '夏季', '秋季', '冬季'];
 
 export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthExpired }) {
   const [preview, setPreview] = useState(null);
@@ -16,8 +17,10 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
     color: '',
     size: '',
     is_processed: '0',
+    chest_circumference: '',
+    shoulder_width: '',
     brand: '',
-    season: '',
+    season: [],
     price: '',
     purchase_date: '',
     description: '',
@@ -80,10 +83,32 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
   const handleChange = (key) => (event) => {
     setFormData((prev) => ({ ...prev, [key]: event.target.value }));
   };
+  const toggleSeason = (season) => {
+    setFormData((prev) => {
+      const current = Array.isArray(prev.season) ? prev.season : [];
+      const exists = current.includes(season);
+      return {
+        ...prev,
+        season: exists ? current.filter((item) => item !== season) : [...current, season],
+      };
+    });
+  };
 
   const handleSubmit = async () => {
     if (!token) {
       onNavigate('profile');
+      return;
+    }
+    if (!String(formData.name || '').trim()) {
+      setErrorMessage('名称不能为空');
+      return;
+    }
+    if (!String(formData.color || '').trim()) {
+      setErrorMessage('颜色不能为空');
+      return;
+    }
+    if (!Array.isArray(formData.season) || formData.season.length === 0) {
+      setErrorMessage('适配季节不能为空');
       return;
     }
 
@@ -104,6 +129,8 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
         color: formData.color,
         size: formData.size,
         is_processed: Number(formData.is_processed),
+        chest_circumference: formData.chest_circumference,
+        shoulder_width: formData.shoulder_width,
         brand: formData.brand,
         season: formData.season,
         price: formData.price,
@@ -171,7 +198,22 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
                 <input className="m-input" value={formData.color} onChange={handleChange('color')} />
               </div>
               <div>
-                <label className="m-label">尺码</label>
+                <label className="m-label">适配季节</label>
+                <div className="m-chip-row" style={{ marginBottom: 0 }}>
+                  {SEASON_OPTIONS.map((season) => (
+                    <button
+                      type="button"
+                      key={season}
+                      className={`m-chip ${formData.season.includes(season) ? 'active' : ''}`}
+                      onClick={() => toggleSeason(season)}
+                    >
+                      {season}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="m-label">尺码（可选）</label>
                 <select className="m-select" value={formData.size} onChange={handleChange('size')}>
                   <option value="">请选择尺码</option>
                   {SIZE_OPTIONS.map((size) => (
@@ -179,30 +221,38 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
                   ))}
                 </select>
               </div>
-            </div>
-            <div style={{ marginTop: 10 }}>
-              <label className="m-label">是否处理</label>
-              <div className="m-radio-row">
-                <label className="m-radio-item">
-                  <input
-                    type="radio"
-                    name="is_processed"
-                    value="0"
-                    checked={formData.is_processed === '0'}
-                    onChange={handleChange('is_processed')}
-                  />
-                  <span>未处理</span>
-                </label>
-                <label className="m-radio-item">
-                  <input
-                    type="radio"
-                    name="is_processed"
-                    value="1"
-                    checked={formData.is_processed === '1'}
-                    onChange={handleChange('is_processed')}
-                  />
-                  <span>已处理</span>
-                </label>
+              <div>
+                <label className="m-label">胸围（可选）</label>
+                <input className="m-input" value={formData.chest_circumference} onChange={handleChange('chest_circumference')} placeholder="例如 96cm" />
+              </div>
+              <div>
+                <label className="m-label">肩宽（可选）</label>
+                <input className="m-input" value={formData.shoulder_width} onChange={handleChange('shoulder_width')} placeholder="例如 42cm" />
+              </div>
+              <div>
+                <label className="m-label">是否处理</label>
+                <div className="m-radio-row">
+                  <label className="m-radio-item">
+                    <input
+                      type="radio"
+                      name="is_processed"
+                      value="0"
+                      checked={formData.is_processed === '0'}
+                      onChange={handleChange('is_processed')}
+                    />
+                    <span>未处理</span>
+                  </label>
+                  <label className="m-radio-item">
+                    <input
+                      type="radio"
+                      name="is_processed"
+                      value="1"
+                      checked={formData.is_processed === '1'}
+                      onChange={handleChange('is_processed')}
+                    />
+                    <span>已处理</span>
+                  </label>
+                </div>
               </div>
             </div>
 
