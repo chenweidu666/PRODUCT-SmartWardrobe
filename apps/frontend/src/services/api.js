@@ -84,3 +84,33 @@ export function fetchTodayWeather(city = '上海') {
   const cityParam = encodeURIComponent(city);
   return apiRequest(`/api/weather?city=${cityParam}`);
 }
+
+export async function uploadClothingImage(token, file, categoryName = '') {
+  const formData = new FormData();
+  formData.append('image', file);
+  if (categoryName) {
+    formData.append('categoryName', categoryName);
+  }
+
+  const headers = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch('/api/upload/image', {
+    method: 'POST',
+    headers,
+    body: formData,
+  });
+
+  const data = await response.json().catch(() => ({}));
+  const message = data?.message || `上传失败（${response.status}）`;
+  if (!response.ok || data?.success === false) {
+    const error = new Error(message);
+    error.status = response.status;
+    error.payload = data;
+    error.isAuthError = response.status === 401 || response.status === 403 || message.includes('token无效');
+    throw error;
+  }
+  return data;
+}

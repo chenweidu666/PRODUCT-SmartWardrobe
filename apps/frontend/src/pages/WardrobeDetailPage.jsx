@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BottomNav } from '../components/navigation/BottomNav';
-import { deleteClothing, fetchClothingDetail, updateClothing } from '../services/api';
+import { deleteClothing, fetchClothingDetail, updateClothing, uploadClothingImage } from '../services/api';
+
+const SIZE_OPTIONS = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
 export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChanged, onAuthExpired }) {
   const [editing, setEditing] = useState(false);
@@ -8,6 +10,8 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [pendingImageFile, setPendingImageFile] = useState(null);
+  const [pendingPreviewUrl, setPendingPreviewUrl] = useState('');
 
   React.useEffect(() => {
     if (!token || !itemId) return;
@@ -30,8 +34,35 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
     load();
   }, [token, itemId, onAuthExpired]);
 
+  React.useEffect(() => () => {
+    if (pendingPreviewUrl) {
+      URL.revokeObjectURL(pendingPreviewUrl);
+    }
+  }, [pendingPreviewUrl]);
+
   const handleChange = (key) => (event) => {
     setItem((prev) => ({ ...prev, [key]: event.target.value }));
+  };
+
+  const handleUploadChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const fileName = String(file.name || '').toLowerCase();
+    const isImage = (file.type && file.type.startsWith('image/')) || /\.(jpg|jpeg|png|webp|gif|bmp|heic|heif)$/i.test(fileName);
+    if (!isImage) {
+      setErrorMessage('仅支持图片文件上传');
+      return;
+    }
+
+    if (pendingPreviewUrl) {
+      URL.revokeObjectURL(pendingPreviewUrl);
+    }
+
+    setErrorMessage('');
+    setPendingImageFile(file);
+    setPendingPreviewUrl(URL.createObjectURL(file));
+    event.target.value = '';
   };
 
   const handleSave = async () => {
@@ -39,6 +70,11 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
     try {
       setSaving(true);
       setErrorMessage('');
+      let nextImageUrl = item.image_url || '';
+      if (pendingImageFile) {
+        const uploadResult = await uploadClothingImage(token, pendingImageFile, item.category_name || '');
+        nextImageUrl = uploadResult?.data?.fileUrl || nextImageUrl;
+      }
       await updateClothing(token, item.id, {
         category_id: item.category_id,
         name: item.name,
@@ -49,7 +85,14 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
         price: item.price,
         purchase_date: item.purchase_date,
         description: item.description,
+        image_url: nextImageUrl,
       });
+      setItem((prev) => ({ ...prev, image_url: nextImageUrl }));
+      setPendingImageFile(null);
+      if (pendingPreviewUrl) {
+        URL.revokeObjectURL(pendingPreviewUrl);
+      }
+      setPendingPreviewUrl('');
       setEditing(false);
       onClothingChanged?.();
     } catch (error) {
@@ -105,19 +148,53 @@ export function WardrobeDetailPage({ onNavigate, token, itemId, onClothingChange
           <>
             <section className="m-card" style={{ padding: 0, overflow: 'hidden' }}>
               <div className="m-clothing-image" style={{ fontSize: 96 }}>
-                {item.image_url ? <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '🧥'}
+                {(pendingPreviewUrl || item.image_url) ? (
+                  <img src={pendingPreviewUrl || item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : '🧥'}
               </div>
+              {editing ? (
+                <div style={{ padding: 12, borderTop: '1px solid #e2e8f0' }}>
+                  <label htmlFor="detail-upload-input" className="m-btn m-btn-secondary" style={{ width: '100%', display: 'inline-flex', justifyContent: 'center', cursor: 'pointer' }}>
+                    {pendingImageFile ? '已选择新图片，保存后生效' : '重新上传图片'}
+                  </label>
+                  <input
+                    id="detail-upload-input"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleUploadChange}
+                  />
+                </div>
+              ) : null}
             </section>
 
             <section className="m-card">
               <div className="m-section-title">基本信息</div>
-              <label className="m-label">分类</label>
-              <input className="m-input" value={item.category_name || '未分类'} disabled />
-              <label className="m-label" style={{ marginTop: 10 }}>名称</label>
-              <input className="m-input" value={item.name || ''} onChange={handleChange('name')} disabled={!editing} />
               <div className="m-grid-2" style={{ marginTop: 10 }}>
-                <div><label className="m-label">颜色</label><input className="m-input" value={item.color || ''} onChange={handleChange('color')} disabled={!editing} /></div>
-                <div><label className="m-label">尺码</label><input className="m-input" value={item.size || ''} onChange={handleChange('size')} disabled={!editing} /></div>
+                <div>
+                  <label className="m-label">分类</label>
+                  <input className="m-input" value={item.category_name || '未分类'} disabled />
+                </div>
+                <div>
+                  <label className="m-label">名称</label>
+                  <input className="m-input" value={item.name || ''} onChange={handleChange('name')} disabled={!editing} />
+                </div>
+                <div>
+                  <label className="m-label">颜色</label>
+                  <input className="m-input" value={item.color || ''} onChange={handleChange('color')} disabled={!editing} />
+                </div>
+                <div>
+                  <label className="m-label">尺码</label>
+                  <select className="m-select" value={item.size || ''} onChange={handleChange('size')} disabled={!editing}>
+                    <option value="">请选择尺码</option>
+                    {SIZE_OPTIONS.map((size) => (
+                      <option key={size} value={size}>{size}</option>
+                    ))}
+                    {item.size && !SIZE_OPTIONS.includes(String(item.size).toUpperCase()) ? (
+                      <option value={item.size}>{item.size}</option>
+                    ) : null}
+                  </select>
+                </div>
               </div>
 
               <div className="m-section-title" style={{ marginTop: 16 }}>购买信息</div>

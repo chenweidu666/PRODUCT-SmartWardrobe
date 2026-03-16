@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { BottomNav } from '../components/navigation/BottomNav';
-import { createCategory, createClothing, fetchCategories } from '../services/api';
+import { createCategory, createClothing, fetchCategories, uploadClothingImage } from '../services/api';
+
+const SIZE_OPTIONS = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 
 export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthExpired }) {
   const [preview, setPreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [categories, setCategories] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -47,12 +50,30 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
     loadCategories();
   }, [token, onAuthExpired]);
 
+  React.useEffect(() => () => {
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+  }, [preview]);
+
   const handleUpload = (event) => {
     const file = event.target.files?.[0];
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = (e) => setPreview(e.target?.result || null);
-    reader.readAsDataURL(file);
+    if (!file) return;
+
+    const fileName = String(file.name || '').toLowerCase();
+    const isImage = (file.type && file.type.startsWith('image/')) || /\.(jpg|jpeg|png|webp|gif|bmp|heic|heif)$/i.test(fileName);
+    if (!isImage) {
+      setErrorMessage('仅支持图片文件上传');
+      return;
+    }
+
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+    setErrorMessage('');
+    setImageFile(file);
+    setPreview(URL.createObjectURL(file));
+    event.target.value = '';
   };
 
   const handleChange = (key) => (event) => {
@@ -68,6 +89,14 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
     try {
       setSubmitting(true);
       setErrorMessage('');
+      let imageUrl = '';
+
+      if (imageFile) {
+        const selectedCategory = categories.find((item) => String(item.id) === String(formData.category_id));
+        const uploadResult = await uploadClothingImage(token, imageFile, selectedCategory?.name || '');
+        imageUrl = uploadResult?.data?.fileUrl || '';
+      }
+
       await createClothing(token, {
         category_id: Number(formData.category_id),
         name: formData.name,
@@ -78,7 +107,7 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
         price: formData.price,
         purchase_date: formData.purchase_date,
         description: formData.description,
-        image_url: '',
+        image_url: imageUrl,
       });
       onClothingChanged?.();
       onNavigate('wardrobe-manage');
@@ -122,17 +151,32 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
             <input id="upload-input" type="file" accept="image/*" style={{ display: 'none' }} onChange={handleUpload} />
 
             <div className="m-section-title" style={{ marginTop: 16 }}>基本信息</div>
-            <label className="m-label">分类</label>
-            <select className="m-select" value={formData.category_id} onChange={handleChange('category_id')}>
-              {categories.map((item) => (
-                <option key={item.id} value={item.id}>{item.name}</option>
-              ))}
-            </select>
-            <label className="m-label" style={{ marginTop: 10 }}>名称</label>
-            <input className="m-input" value={formData.name} onChange={handleChange('name')} />
             <div className="m-grid-2" style={{ marginTop: 10 }}>
-              <div><label className="m-label">颜色</label><input className="m-input" value={formData.color} onChange={handleChange('color')} /></div>
-              <div><label className="m-label">尺码</label><input className="m-input" value={formData.size} onChange={handleChange('size')} /></div>
+              <div>
+                <label className="m-label">分类</label>
+                <select className="m-select" value={formData.category_id} onChange={handleChange('category_id')}>
+                  {categories.map((item) => (
+                    <option key={item.id} value={item.id}>{item.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="m-label">名称</label>
+                <input className="m-input" value={formData.name} onChange={handleChange('name')} />
+              </div>
+              <div>
+                <label className="m-label">颜色</label>
+                <input className="m-input" value={formData.color} onChange={handleChange('color')} />
+              </div>
+              <div>
+                <label className="m-label">尺码</label>
+                <select className="m-select" value={formData.size} onChange={handleChange('size')}>
+                  <option value="">请选择尺码</option>
+                  {SIZE_OPTIONS.map((size) => (
+                    <option key={size} value={size}>{size}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="m-section-title" style={{ marginTop: 16 }}>购买信息</div>
