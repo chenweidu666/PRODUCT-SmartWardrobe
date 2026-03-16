@@ -2,9 +2,19 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { BottomNav } from '../components/navigation/BottomNav';
 import { fetchClothingList } from '../services/api';
 
+const SEASON_OPTIONS = ['春季', '夏季', '秋季', '冬季'];
+
+function parseSeasonList(value) {
+  return String(value || '')
+    .split(/[、,，\s]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthExpired }) {
   const [activeCategory, setActiveCategory] = useState('全部');
   const [activeStatus, setActiveStatus] = useState('pending');
+  const [activeSeasons, setActiveSeasons] = useState([]);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -46,9 +56,19 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
         activeStatus === 'all' ||
         (activeStatus === 'processed' && processed) ||
         (activeStatus === 'pending' && !processed);
-      return matchCategory && matchStatus;
+      const itemSeasons = parseSeasonList(item.season);
+      const matchSeason =
+        activeSeasons.length === 0 ||
+        activeSeasons.some((season) => itemSeasons.includes(season));
+      return matchCategory && matchStatus && matchSeason;
     });
-  }, [activeCategory, activeStatus, items]);
+  }, [activeCategory, activeStatus, activeSeasons, items]);
+
+  const toggleSeason = (season) => {
+    setActiveSeasons((prev) =>
+      prev.includes(season) ? prev.filter((item) => item !== season) : [...prev, season]
+    );
+  };
 
   return (
     <div className="m-page m-page-manage">
@@ -85,6 +105,29 @@ export function WardrobeManagePage({ onNavigate, token, clothingVersion, onAuthE
                   <option key={item} value={item}>{item}</option>
                 ))}
               </select>
+            </div>
+            <div className="m-filter-inline" style={{ alignItems: 'flex-start' }}>
+              <span className="m-filter-inline-label" style={{ paddingTop: 6 }}>季节：</span>
+              <div className="m-chip-row" style={{ marginBottom: 0, flexWrap: 'wrap' }}>
+                <button
+                  key="all-seasons"
+                  type="button"
+                  className={`m-chip ${activeSeasons.length === 0 ? 'active' : ''}`}
+                  onClick={() => setActiveSeasons([])}
+                >
+                  全部
+                </button>
+                {SEASON_OPTIONS.map((season) => (
+                  <button
+                    key={season}
+                    type="button"
+                    className={`m-chip ${activeSeasons.includes(season) ? 'active' : ''}`}
+                    onClick={() => toggleSeason(season)}
+                  >
+                    {season}
+                  </button>
+                ))}
+              </div>
             </div>
           </>
         ) : null}
