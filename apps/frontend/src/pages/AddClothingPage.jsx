@@ -9,12 +9,12 @@ export function AddClothingPage({ onNavigate, token, onClothingChanged, onAuthEx
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
     category_id: '',
-    name: '速写羽绒服',
-    color: '黑色',
-    size: 'XXL',
+    name: '',
+    color: '',
+    size: '',
     brand: '',
     season: '',
-    price: '1497',
+    price: '',
     purchase_date: '',
     description: '',
   });

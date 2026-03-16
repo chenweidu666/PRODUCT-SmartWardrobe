@@ -1,11 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { BottomNav } from '../components/navigation/BottomNav';
-import { fetchClothingList } from '../services/api';
+import { fetchClothingList, fetchTodayWeather } from '../services/api';
 
 export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [weather, setWeather] = useState(null);
+  const [weatherLoading, setWeatherLoading] = useState(false);
+  const [weatherError, setWeatherError] = useState('');
 
   useEffect(() => {
     if (!token) {
@@ -30,6 +33,22 @@ export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) 
     };
     load();
   }, [token, clothingVersion, onAuthExpired]);
+
+  useEffect(() => {
+    const loadWeather = async () => {
+      try {
+        setWeatherLoading(true);
+        setWeatherError('');
+        const data = await fetchTodayWeather('上海');
+        setWeather(data.weather || null);
+      } catch (error) {
+        setWeatherError(error.message || '天气加载失败');
+      } finally {
+        setWeatherLoading(false);
+      }
+    };
+    loadWeather();
+  }, []);
 
   const dashboard = useMemo(() => {
     const total = items.length;
@@ -60,13 +79,20 @@ export function HomePage({ onNavigate, token, clothingVersion, onAuthExpired }) 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div className="m-section-title">今日天气</div>
-              <div style={{ color: '#64748b', fontSize: 13 }}>根据天气智能推荐穿搭</div>
+              <div style={{ color: '#64748b', fontSize: 13 }}>
+                {weather?.resolvedCity ? `${weather.resolvedCity} 实时天气` : '根据天气智能推荐穿搭'}
+              </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 30, fontWeight: 700, color: '#2563eb' }}>22°</div>
-              <div style={{ color: '#64748b', fontSize: 12 }}>多云</div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: '#2563eb' }}>
+                {weatherLoading ? '--' : Number.isFinite(weather?.temperature) ? `${Math.round(weather.temperature)}°` : '22°'}
+              </div>
+              <div style={{ color: '#64748b', fontSize: 12 }}>
+                {weatherLoading ? '加载中...' : weather?.condition || '多云'}
+              </div>
             </div>
           </div>
+          {weatherError ? <div style={{ color: '#dc2626', fontSize: 12, marginTop: 8 }}>{weatherError}</div> : null}
         </section>
 
         <section className="m-card" style={{ background: 'linear-gradient(135deg,#faf5ff,#fdf2f8)' }}>

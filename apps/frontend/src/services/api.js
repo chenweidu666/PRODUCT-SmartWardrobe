@@ -79,3 +79,8 @@ export function deleteClothing(token, id) {
     token,
   });
 }
+
+export function fetchTodayWeather(city = '上海') {
+  const cityParam = encodeURIComponent(city);
+  return apiRequest(`/api/weather?city=${cityParam}`);
+}

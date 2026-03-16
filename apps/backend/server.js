@@ -20,6 +20,53 @@ const {
 
 const app = express();
 
+const WEATHER_CONDITION_LABELS = {
+  0: '晴',
+  1: '少云',
+  2: '多云',
+  3: '阴',
+  45: '雾',
+  48: '冻雾',
+  51: '小毛毛雨',
+  53: '毛毛雨',
+  55: '强毛毛雨',
+  56: '冻毛毛雨',
+  57: '强冻毛毛雨',
+  61: '小雨',
+  63: '中雨',
+  65: '大雨',
+  66: '冻雨',
+  67: '强冻雨',
+  71: '小雪',
+  73: '中雪',
+  75: '大雪',
+  77: '冰粒',
+  80: '阵雨',
+  81: '强阵雨',
+  82: '暴雨',
+  85: '阵雪',
+  86: '强阵雪',
+  95: '雷阵雨',
+  96: '雷暴夹小冰雹',
+  99: '雷暴夹大冰雹'
+};
+const WEATHER_CACHE_MS = 10 * 60 * 1000;
+const weatherCache = new Map();
+
+async function requestJson(url, timeout = 6000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) {
+      throw new Error(`天气服务请求失败（${response.status}）`);
+    }
+    return await response.json();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // 确保上传目录存在
 ensureDirectories();
 
@@ -33,9 +80,17 @@ app.use(express.json());
 // 静态文件服务 — 上传图片
 app.use('/uploads', express.static(path.join(__dirname, '../../database/uploads/images')));
 
-// 生产环境: 托管前端构建产物
-const frontendDist = path.join(__dirname, '../frontend/dist');
-if (fs.existsSync(frontendDist)) {
+// 生产环境: 托管前端构建产物（兼容不同启动目录）
+const frontendDistCandidates = [
+  path.resolve(__dirname, '../frontend/dist'),
+  path.resolve(__dirname, '../../apps/frontend/dist'),
+  path.resolve(process.cwd(), 'apps/frontend/dist'),
+  path.resolve(process.cwd(), 'frontend/dist')
+];
+const frontendDist = frontendDistCandidates.find((distPath) =>
+  fs.existsSync(path.join(distPath, 'index.html'))
+);
+if (frontendDist) {
   app.use(express.static(frontendDist));
 }
 
@@ -166,6 +221,61 @@ app.get('/api/users', async (req, res) => {
     res.status(500).json({
       success: false,
       message: '服务器内部错误'
+    });
+  }
+});
+
+// 天气接口（公开）：根据城市名称返回当前天气
+app.get('/api/weather', async (req, res) => {
+  try {
+    const city = String(req.query.city || '上海').trim() || '上海';
+    const cacheKey = city.toLowerCase();
+    const cached = weatherCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < WEATHER_CACHE_MS) {
+      return res.json(cached.payload);
+    }
+
+    const geoUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=zh&format=json`;
+    const geoData = await requestJson(geoUrl);
+    const location = Array.isArray(geoData?.results) ? geoData.results[0] : null;
+    if (!location) {
+      return res.status(404).json({
+        success: false,
+        message: `未找到城市：${city}`
+      });
+    }
+
+    const weatherUrl =
+      `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}` +
+      `&longitude=${location.longitude}&current=temperature_2m,apparent_temperature,weather_code&timezone=auto`;
+    const weatherData = await requestJson(weatherUrl);
+    const current = weatherData?.current;
+    if (!current) {
+      throw new Error('天气数据格式异常');
+    }
+
+    const payload = {
+      success: true,
+      weather: {
+        city: city,
+        resolvedCity: location.name,
+        temperature: Number(current.temperature_2m),
+        apparentTemperature: Number(current.apparent_temperature),
+        weatherCode: Number(current.weather_code),
+        condition: WEATHER_CONDITION_LABELS[current.weather_code] || '未知'
+      }
+    };
+
+    weatherCache.set(cacheKey, {
+      timestamp: Date.now(),
+      payload
+    });
+    res.json(payload);
+  } catch (error) {
+    console.error('获取天气失败:', error);
+    res.status(500).json({
+      success: false,
+      message: '获取天气失败'
     });
   }
 });
@@ -1132,9 +1242,9 @@ app.get('/api/protected', authenticateToken, (req, res) => {
 });
 
 // 前端 SPA 路由 fallback (必须放在所有 API 路由之后)
-if (fs.existsSync(path.join(__dirname, '../frontend/dist/index.html'))) {
+if (frontendDist) {
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+    res.sendFile(path.join(frontendDist, 'index.html'));
   });
 }
 
