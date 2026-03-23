@@ -26,8 +26,10 @@ SmartWardrobe/
 │   ├── docker/
 │   │   ├── Dockerfile.frontend
 │   │   ├── Dockerfile.backend
-│   │   └── docker-compose.yml
+│   │   ├── docker-compose.yml
+│   │   └── .env.example
 │   └── database/
+├── Dockerfile                     # 符号链接 -> infra/docker/Dockerfile.backend
 ├── docs/
 ├── design/
 │   └── figma-project/
@@ -37,7 +39,43 @@ SmartWardrobe/
 └── README.md
 ```
 
-## 本地启动
+## Docker 一键启动（推荐）
+
+### 方式一：项目根目录（推荐）
+
+```bash
+mkdir -p database/uploads/images database_backup
+cp infra/docker/.env.example .env   # 首次请编辑 JWT_SECRET
+docker compose -f infra/docker/docker-compose.yml up -d --build
+```
+
+### 方式二：使用根目录 Dockerfile
+
+```bash
+mkdir -p database/uploads/images database_backup
+cp infra/docker/.env.example .env   # 首次请编辑 JWT_SECRET
+docker build -t smartwardrobe-private .
+docker run -d -p 8080:8080 \
+  -v $(pwd)/database:/app/database \
+  -v $(pwd)/database_backup:/app/database_backup \
+  --name smart-wardrobe \
+  smartwardrobe-private
+```
+
+浏览器访问 **http://127.0.0.1:8080/**（内网则用本机局域网 IP:8080）。  
+若 CORS 拦截，在 `.env` 里用 `CORS_ORIGINS` 追加你的访问地址。
+
+### 镜像标签管理
+
+```bash
+# 查看镜像
+docker images | grep smartwardrobe-private
+
+# 打标签（版本管理）
+docker tag smartwardrobe-private:latest smartwardrobe-private:v1.0-$(date +%Y%m%d-%H%M%S)
+```
+
+## 本地启动（开发）
 
 ```bash
 # 后端（端口 8080）

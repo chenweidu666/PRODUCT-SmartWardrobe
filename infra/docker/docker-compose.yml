@@ -1,15 +1,23 @@
+# SmartWardrobe — 单容器：后端 + 前端静态资源（与 Dockerfile.backend 配套）
+name: smartwardrobe-private
+
 services:
   smartwardrobe:
     build:
       context: ../..
       dockerfile: infra/docker/Dockerfile.backend
-    container_name: smart-wardrobe
+    container_name: smart-wardrobe-private
     restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "0.0.0.0:8080:8080"
     volumes:
-      - ../../database:/app/database              # SQLite 数据库 + 图片持久化（项目内可见）
-      - ../../database_backup:/app/database_backup  # 备份目录持久化（项目内可见）
+      - ../../database:/app/database
+      - ../../database_backup:/app/database_backup
     environment:
       - NODE_ENV=production
+      - PORT=8080
       - TZ=Asia/Shanghai
+      # 生产环境必填，否则 constants.js 会直接退出
+      - JWT_SECRET=${JWT_SECRET:-smartwardrobe-change-me-now}
+      # 留空 = 生产环境允许任意 Origin（内网自托管）；公网请设逗号分隔白名单
+      - CORS_ORIGINS=${CORS_ORIGINS:-}

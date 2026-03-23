@@ -7,7 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const Database = require('better-sqlite3');
 const { userDB, userCategoryDB, clothingDB } = require('./database');
-const { SERVER_PORT, JWT_SECRET_KEY } = require('./src/config/constants');
+const { SERVER_PORT, JWT_SECRET_KEY, NODE_ENV } = require('./src/config/constants');
 const { createAuthenticateToken } = require('./src/middlewares/auth');
 const { 
   ensureDirectories, 
@@ -29,15 +29,25 @@ const defaultDevOrigins = [
   'http://127.0.0.1:8081',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
+  'http://localhost:8080',
+  'http://127.0.0.1:8080',
   'http://192.168.31.10:8080',
-  'http://192.168.31.10:8081'
+  'http://192.168.31.10:8081',
 ];
-const allowedCorsOrigins =
-  configuredCorsOrigins.length > 0
+/** 生产且未配置 CORS_ORIGINS：允许任意 Origin（仅可信内网/自托管）；公网请配置白名单 */
+const corsAllowAnyProduction =
+  NODE_ENV === 'production' && configuredCorsOrigins.length === 0;
+const allowedCorsOrigins = corsAllowAnyProduction
+  ? null
+  : configuredCorsOrigins.length > 0
     ? configuredCorsOrigins
-    : process.env.NODE_ENV === 'production'
-      ? []
-      : defaultDevOrigins;
+    : defaultDevOrigins;
+
+if (corsAllowAnyProduction) {
+  console.warn(
+    '[cors] 生产环境未配置 CORS_ORIGINS，已允许任意来源；若暴露公网请在环境变量中设置逗号分隔的白名单'
+  );
+}
 
 const WEATHER_CONDITION_LABELS = {
   0: '晴',
@@ -98,20 +108,24 @@ async function requestJson(url, timeout = 6000) {
 ensureDirectories();
 
 // 中间件
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) {
-      callback(null, true);
-      return;
-    }
-    if (allowedCorsOrigins.includes(origin)) {
-      callback(null, true);
-      return;
-    }
-    callback(new Error('CORS origin not allowed'));
-  },
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: corsAllowAnyProduction
+      ? true
+      : (origin, callback) => {
+          if (!origin) {
+            callback(null, true);
+            return;
+          }
+          if (allowedCorsOrigins && allowedCorsOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+          }
+          callback(new Error('CORS origin not allowed'));
+        },
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // 静态文件服务 — 上传图片

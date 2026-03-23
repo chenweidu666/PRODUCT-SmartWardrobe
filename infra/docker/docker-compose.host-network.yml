@@ -1,0 +1,36 @@
+# Linux 宿主机专用：使用 host 网络，服务直接监听宿主机 8080（不经 Docker 端口映射）。
+# 当「本机固定为某局域网 IP（如 192.168.31.10）但桥接映射访问异常」时可尝试。
+# 用法：仓库根目录 ./start.sh up-host
+# 注意：Docker Desktop（Windows/Mac）对 host 网络支持有限，请以 Linux 为准。
+name: smartwardrobe-private
+
+services:
+  smartwardrobe:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.backend
+    container_name: smart-wardrobe-private
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ../../database:/app/database
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - TZ=Asia/Shanghai
+      - JWT_SECRET=${JWT_SECRET:-smartwardrobe-change-me-now}
+      - CORS_ORIGINS=${CORS_ORIGINS:-}
+      - DB_PATH=/app/database/wardrobe.db
+      - UPLOAD_DIR=/app/database/uploads/images
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:8080/',(r)=>{process.exit(r.statusCode===200?0:1)}).on('error',()=>process.exit(1))",
+        ]
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
